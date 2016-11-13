@@ -1,0 +1,14 @@
+set display.driver      OpenGl
+
+set app.resolution      1680,1050
+set app.fullscreen      1
+set app.vsync           1
+set app.multisample     4
+set app.textureLod      0
+
+;set drawCollisions     1
+
+
+set app.resolution      1280,800
+set app.fullscreen      false
+set app.vsync           0

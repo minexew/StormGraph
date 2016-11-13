@@ -1,0 +1,6 @@
+set display.driver      OpenGl
+
+set app.resolution      800,512
+
+set drawCollisions      1
+set driver.softShadows 0

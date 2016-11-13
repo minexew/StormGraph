@@ -1,0 +1,30 @@
+[submodule "StormGraphCommon/dependencies/glm"]
+	path = StormGraphCommon/dependencies/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "StormGraphCommon/dependencies/libcfx2"]
+	path = StormGraphCommon/dependencies/libcfx2
+	url = https://github.com/minexew/libcfx2.git
+[submodule "StormGraphCommon/dependencies/littl"]
+	path = StormGraphCommon/dependencies/littl
+	url = https://github.com/minexew/littl.git
+[submodule "StormGraphCore/dependencies/libjpeg"]
+	path = StormGraphCore/dependencies/libjpeg
+	url = https://github.com/LuaDist/libjpeg.git
+[submodule "StormGraphCore/dependencies/lodepng"]
+	path = StormGraphCore/dependencies/lodepng
+	url = https://github.com/lvandeve/lodepng.git
+[submodule "StormGraphCore/dependencies/vorbis"]
+	path = StormGraphCore/dependencies/vorbis
+	url = https://github.com/xiph/vorbis.git
+[submodule "StormGraphCore/dependencies/zlib"]
+	path = StormGraphCore/dependencies/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "OpenGlDriver/dependencies/freetype2"]
+	path = OpenGlDriver/dependencies/freetype2
+	url = git://git.sv.nongnu.org/freetype/freetype2.git
+[submodule "StormGraphCore/dependencies/ogg"]
+	path = StormGraphCore/dependencies/ogg
+	url = https://github.com/xiph/ogg.git
+[submodule "StormGraphCore/dependencies/openal-soft"]
+	path = StormGraphCore/dependencies/openal-soft
+	url = https://github.com/kcat/openal-soft.git
