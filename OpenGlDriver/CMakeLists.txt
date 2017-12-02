@@ -4,6 +4,8 @@ project(OpenGlDriver)
 set(CMAKE_CXX_STANDARD 14)
 set(library ${PROJECT_NAME})
 
+set(BUILD_SHARED_LIBS 0)
+
 if (NOT TARGET StormGraphCore)
     add_subdirectory(../StormGraphCore ${CMAKE_BINARY_DIR}/build-StormGraphCore)
 endif()
