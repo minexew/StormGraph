@@ -233,13 +233,13 @@ namespace StormGraph
 		buffer.resize( inputLength );
 
 		if ( input->read( &buffer[0], inputLength ) != inputLength)
-			return false;
+			return nullptr;
 
 		std::vector<uint8_t> pixels;
 		unsigned width, height;
 
 		if ( lodepng::decode( pixels, width, height, &buffer[0], inputLength, LCT_RGBA ) != 0 )
-			return false;
+			return nullptr;
 
         Image* image = new Image;
         //image->format = GL_RGBA;

@@ -1030,8 +1030,13 @@ namespace OpenGlDriver
 
             if ( !rendererOnly )
                 glApi.pointers[i] = ( void ( * )() ) SDL_GL_GetProcAddress( glLinkTable[i].name );
-            else
+            else {
+#ifdef __li_MSW
                 glApi.pointers[i] = ( void ( * )() ) wglGetProcAddress( glLinkTable[i].name );
+#else
+                SG_assert4(!rendererOnly, "Renderer-only mode is currently not supported on this platform.");
+#endif
+            }
 
             if ( !glApi.pointers[i] )
             {
@@ -1054,9 +1059,12 @@ namespace OpenGlDriver
             }
         }
 
-        if ( !failedFor.isEmpty() )
+        if ( !failedFor.isEmpty() ) {
+#ifdef __li_MSW
             MessageBoxA( 0, "Failed to link OpenGL entry `" + failedFor + "`!\n\nSome functionality might be disabled."
                     " You might try to update your graphics drivers to fix this problem (OpenGL 2.0 is required). See the application log for more details.", "StormGraph Engine", MB_ICONWARNING );
+#endif
+        }
 
         if ( !missingEntries.isEmpty() )
             Common::logEvent( "OpenGlDriver.OpenGlDriver", "Failed to link one or more OpenGL entries:\n<ul>" + missingEntries + "</ul>" );
@@ -1167,7 +1175,7 @@ namespace OpenGlDriver
         if ( eventListener )
             eventListener->onFrameEnd();
 
-        checkErrors( "onFrameEnd" );
+        //checkErrors( "onFrameEnd" );
     }
 
     void OpenGlDriver::onKeyState( int16_t key, StormGraph::Key::State state, Unicode::Char character )
@@ -1473,11 +1481,13 @@ namespace OpenGlDriver
 
             SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
 
+#ifndef __linux__
             if ( displayMode->multisamplingLevel )
             {
                 SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
                 SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, displayMode->multisamplingLevel );
             }
+#endif
 
             SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, displayMode->vsync );
             //SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
@@ -1499,7 +1509,7 @@ namespace OpenGlDriver
             SDL_WM_SetCaption( displayMode->windowTitle, "A" );
 
             if ( !( display = SDL_SetVideoMode( viewport.x, viewport.y, 32, flags ) ) )
-                throw Exception( "OpenGlDriver.OpenGlDriver.setDisplayMode", "GfxInitError", "SDL/OpenGL subsystem initialization failed" );
+                throw Exception( "OpenGlDriver.OpenGlDriver.setDisplayMode", "GfxInitError", "SDL/OpenGL subsystem initialization failed: " + (String)SDL_GetError() );
 
             auto se = new SdlEventSource( display, profiling );
             eventSource = se;
@@ -1919,6 +1929,7 @@ namespace OpenGlDriver
 
             profiling.profiler->reenter( profiling.swap );
             SDL_GL_SwapBuffers();
+            SDL_Delay(16);
             profiling.profiler->leave( profiling.swap );
             profiling.swapTime = profiling.profiler->getDelta( profiling.swap );
 
@@ -1935,6 +1946,7 @@ namespace OpenGlDriver
             eventListener->onFrameEnd();
 
             SDL_GL_SwapBuffers();
+            SDL_Delay(16);
         }
 
         profiling.interval--;

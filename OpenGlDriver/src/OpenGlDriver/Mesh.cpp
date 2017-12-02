@@ -204,7 +204,7 @@ namespace OpenGlDriver
 
                 for ( unsigned i = 0; i < remoteData->vertexProperties.numTextures; i++ )
                 {
-                    glApi.functions.glClientActiveTexture( GL_TEXTURE0 + i );
+                    glApi.functions.glClientActiveTextureARB( GL_TEXTURE0 + i );
                     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 
                     if ( driver->globalState.currentUvSource[i] != &remoteData->vbo )
@@ -216,7 +216,7 @@ namespace OpenGlDriver
 
                 if ( remoteData->vertexProperties.hasLightUvs )
                 {
-                    glApi.functions.glClientActiveTexture( GL_TEXTURE0 + remoteData->vertexProperties.numTextures );
+                    glApi.functions.glClientActiveTextureARB( GL_TEXTURE0 + remoteData->vertexProperties.numTextures );
                     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 
                     if ( driver->globalState.currentUvSource[remoteData->vertexProperties.numTextures] != &remoteData->vbo )
@@ -255,7 +255,7 @@ namespace OpenGlDriver
 
                 for ( unsigned i = 0; i < TEXTURES_PER_VERTEX && !localData->uvs[i].isEmpty(); i++ )
                 {
-                    glApi.functions.glClientActiveTexture( GL_TEXTURE0 + i );
+                    glApi.functions.glClientActiveTextureARB( GL_TEXTURE0 + i );
                     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 
                     if ( driver->globalState.currentUvSource[i] != localData )
@@ -267,7 +267,7 @@ namespace OpenGlDriver
 
                 if ( !localData->lightUvs.isEmpty() )
                 {
-                    glApi.functions.glClientActiveTexture( GL_TEXTURE1 );
+                    glApi.functions.glClientActiveTextureARB( GL_TEXTURE1 );
                     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 
                     if ( driver->globalState.currentUvSource[1] != localData )

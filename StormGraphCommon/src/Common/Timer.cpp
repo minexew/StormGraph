@@ -23,6 +23,11 @@
 
 #include <StormGraph/GraphicsDriver.hpp>
 
+#ifndef __li_MSW
+#include <sys/time.h>
+#include <unistd.h>
+#endif
+
 namespace StormGraph
 {
 #ifdef __li_MSW
@@ -64,7 +69,10 @@ namespace StormGraph
         QueryPerformanceCounter( &temp );
         return temp.QuadPart * 1000000 / frequency.QuadPart;
 #else
-#error Define me!!!
+        struct timeval tv;
+        gettimeofday( &tv, nullptr );
+
+        return tv.tv_sec * 1000000 + tv.tv_usec;
 #endif
     }
 

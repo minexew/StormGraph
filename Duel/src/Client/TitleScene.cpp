@@ -316,7 +316,11 @@ namespace Duel
                     break;
 
                 case ConnectingThread::error:
+#ifdef __li_MSW
                     MessageBoxA( nullptr, "Failed to connect to the server.", "Storm", MB_ICONERROR );
+#else
+                    // FIXME
+#endif
 
                     connecting.thread->waitFor();
 

@@ -21,7 +21,9 @@ file(GLOB sources
 )
 
 add_library(${library} SHARED ${sources})
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Driver.OpenGl")
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Driver.OpenGl"
+        C_VISIBILITY_PRESET hidden
+        CXX_VISIBILITY_PRESET hidden)
 
 add_dependencies(${library} StormGraphCommon)
 target_link_libraries(${library} StormGraphCommon)

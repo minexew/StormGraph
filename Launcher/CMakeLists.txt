@@ -27,3 +27,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 target_include_directories(${PROJECT_NAME} PRIVATE
     src
 )
+
+if (NOT WIN32)
+    target_link_libraries(${PROJECT_NAME} dl)
+endif()

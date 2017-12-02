@@ -5,14 +5,16 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(DIST_DIR ${CMAKE_SOURCE_DIR}/dist)
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIST_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory(../StormGraphCore  ${CMAKE_BINARY_DIR}/build-StormGraphCore)
 add_subdirectory(../Gui             ${CMAKE_BINARY_DIR}/build-Gui)
-add_subdirectory(../OpenGLDriver    ${CMAKE_BINARY_DIR}/build-OpenGLDriver)
+add_subdirectory(../OpenGlDriver    ${CMAKE_BINARY_DIR}/build-OpenGLDriver)
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIST_DIR}/${PROJECT_NAME}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_DIR}/${PROJECT_NAME}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
@@ -24,7 +26,9 @@ file(GLOB sources
 )
 
 add_library(${PROJECT_NAME} SHARED ${sources})
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Client")
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Client"
+        C_VISIBILITY_PRESET hidden
+        CXX_VISIBILITY_PRESET hidden)
 
 add_dependencies(${PROJECT_NAME} StormGraphCommon)
 target_link_libraries(${PROJECT_NAME} StormGraphCommon)

@@ -8,7 +8,6 @@
 #include <littl/Library.hpp>
 
 #include <stdio.h>
-#include <windows.h>
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -51,7 +50,16 @@ int main( int argc, char** argv )
 #endif
 #endif
 	*/
-    String libraryName = !dedicated ? path + "Client.dll" : path + "Server.dll";
+
+#ifdef __li_MSW
+#define PREFIX ""
+#define SUFFIX ".dll"
+#elif defined(__linux__)
+#define PREFIX "lib"
+#define SUFFIX ".so"
+#endif
+
+    String libraryName = !dedicated ? path + PREFIX "Client" SUFFIX : path + PREFIX "Server" SUFFIX;
 
     Object<Library> library = Library::open( libraryName );
 

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 project(StormGraphCore)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(library ${PROJECT_NAME})
 
 if (NOT TARGET StormGraphCommon)
@@ -36,7 +37,9 @@ file(GLOB sources
 )
 
 add_library(${library} SHARED ${sources})
-set_target_properties(${library} PROPERTIES OUTPUT_NAME "Core")
+set_target_properties(${library} PROPERTIES OUTPUT_NAME "Core"
+        C_VISIBILITY_PRESET hidden
+        CXX_VISIBILITY_PRESET hidden)
 
 add_dependencies(${library} StormGraphCommon)
 target_link_libraries(${library} StormGraphCommon)

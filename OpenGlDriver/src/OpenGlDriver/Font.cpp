@@ -61,9 +61,6 @@ namespace OpenGlDriver
     {
         SG_assert3( input != nullptr, "OpenGlDriver.Font.Font" )
 
-        LARGE_INTEGER freq, begin, end;
-        QueryPerformanceFrequency( &freq );
-
 #ifdef Use_Sdl_Ttf
         font = TTF_OpenFontRW( getRwOps( input ), 1, size );
 #else
@@ -81,7 +78,7 @@ namespace OpenGlDriver
 
         //printf( "DBG: lineskip %u\n", lineSkip );
 
-        QueryPerformanceCounter( &begin );
+        auto begin = Timer::getRelativeMicroseconds();
 
         // some temporary structures
         Array<GlyphInfo> gi( cpMax );
@@ -233,12 +230,12 @@ namespace OpenGlDriver
 
         heightCorrection = ( float ) lineSkip / size;
 
-        QueryPerformanceCounter( &end );
+        auto end = Timer::getRelativeMicroseconds();
 
         //printf( "OpenGlDriver: generated texture for `%s`\n\tin %g ms (height correction factor is %g)\n\n", name,
         //        ( end.QuadPart - begin.QuadPart ) * 1000.0 / ( double )freq.QuadPart, heightCorrection );
 
-        Common::logEvent( "OpenGlDriver.Font", "Generated texture for `" + this->name + "`@" + size + " in " + ( ( end.QuadPart - begin.QuadPart ) / ( freq.QuadPart / 1000.0 ) )
+        Common::logEvent( "OpenGlDriver.Font", "Generated texture for `" + this->name + "`@" + size + " in " + ( ( end - begin ) / 1000.0 )
                 + " ms. (height correction factor is " + heightCorrection + ")" );
                 
         Resource::add( this );
@@ -302,7 +299,7 @@ namespace OpenGlDriver
 
         material->apply( colour );
 
-        glApi.functions.glClientActiveTexture( GL_TEXTURE0 );
+        glApi.functions.glClientActiveTextureARB( GL_TEXTURE0 );
 
         glEnableClientState( GL_VERTEX_ARRAY );
         glEnableClientState( GL_TEXTURE_COORD_ARRAY );

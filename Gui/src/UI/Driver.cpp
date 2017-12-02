@@ -23,7 +23,7 @@
 
 #include "GuiDriver.hpp"
 
-extern "C" __declspec( dllexport ) StormGraph::IGuiDriver* createGuiDriver( StormGraph::IEngine* engine, const char* driverName )
+extern "C" StormGraph_Library_Export StormGraph::IGuiDriver* createGuiDriver( StormGraph::IEngine* engine, const char* driverName )
 {
     //if ( strcmp( driverName, "OpenGl" ) == 0 )
         return new GuiDriver::GuiDriver( engine );

@@ -78,7 +78,7 @@ namespace OpenGlDriver
             PFNGLBUFFERDATAPROC glBufferData;
             PFNGLBUFFERSUBDATAPROC glBufferSubData;
             PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatus;
-            PFNGLCLIENTACTIVETEXTUREPROC glClientActiveTexture;
+            PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB;
             PFNGLCOMPILESHADERPROC glCompileShader;
             PFNGLCOMPRESSEDTEXIMAGE2DARBPROC glCompressedTexImage2DARB;
             PFNGLCREATEPROGRAMPROC glCreateProgram;
@@ -117,8 +117,8 @@ namespace OpenGlDriver
         }
         functions;
 
-        //void ( *pointers[sizeof( functions ) / sizeof( void ( * )() )] )();
-        void ( *pointers[] )();
+        void ( *pointers[sizeof( functions ) / sizeof( void ( * )() )] )();
+        //void ( *pointers[] )();
     };
 
     struct ConstVertices

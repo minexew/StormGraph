@@ -17,7 +17,9 @@ file(GLOB sources
 )
 
 add_library(${library} SHARED ${sources})
-set_target_properties(${library} PROPERTIES OUTPUT_NAME "Common")
+set_target_properties(${library} PROPERTIES OUTPUT_NAME "Common"
+        C_VISIBILITY_PRESET hidden
+        CXX_VISIBILITY_PRESET hidden)
 
 target_compile_definitions(${library} PRIVATE -DStormGraph_Build_Common_DLL=1)
 

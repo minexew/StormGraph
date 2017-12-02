@@ -23,7 +23,7 @@
 
 #include "OpenGlDriver.hpp"
 
-extern "C" __declspec( dllexport ) StormGraph::IGraphicsDriver* createGraphicsDriver( const char* driverName, StormGraph::IEngine* engine )
+extern "C" StormGraph_Library_Export StormGraph::IGraphicsDriver* createGraphicsDriver( const char* driverName, StormGraph::IEngine* engine )
 {
     if ( strcmp( driverName, "OpenGl" ) == 0 )
         return new OpenGlDriver::OpenGlDriver( engine );

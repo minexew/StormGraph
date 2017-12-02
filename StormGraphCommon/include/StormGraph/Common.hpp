@@ -38,9 +38,23 @@
 #ifdef __li_MSW
 #define StormGraph_Library_Prefix ""
 #define StormGraph_Library_Suffix ".dll"
+#define StormGraph_Library_Export __declspec( dllexport )
 
 #ifdef WIN64
 #define StormGraph_Bin StormGraph_ABI "-win64"
+#define StormGraph_Platform "amd64"
+#else
+#define StormGraph_Bin "bin"
+#define StormGraph_Platform "x86"
+#endif
+
+#elif defined(__linux__)
+#define StormGraph_Library_Prefix "lib"
+#define StormGraph_Library_Suffix ".so"
+#define StormGraph_Library_Export __attribute__((visibility ("default")))
+
+#ifdef __x86_64__
+#define StormGraph_Bin "bin"
 #define StormGraph_Platform "amd64"
 #else
 #define StormGraph_Bin "bin"
@@ -63,6 +77,9 @@
 #elif !defined( DOXYGEN ) && defined( li_MSW ) && !defined( StormGraph_Static_Common )
 #define SgClass class __declspec( dllimport )
 #define SgStruct struct __declspec( dllimport )
+#elif !defined( DOXYGEN ) && defined( __linux__ ) && defined( StormGraph_Build_Common_DLL )
+#define SgClass class StormGraph_Library_Export
+#define SgStruct struct StormGraph_Library_Export
 #endif
 
 #ifndef SgClass
@@ -107,7 +124,7 @@ namespace StormGraph
 
     typedef void* ( *InterfaceProvider )( const char* name );
 
-#define Sg_implementInterfaceProvider( name_ ) extern "C" __declspec( dllexport ) void* createInterface( const char* name_ )
+#define Sg_implementInterfaceProvider( name_ ) extern "C" StormGraph_Library_Export void* createInterface( const char* name_ )
 
     class IApplication
     {

@@ -45,7 +45,7 @@ namespace StormGraph
 #ifdef StormGraph_Static_Core
     ICore* createCore( const char* apiVersion )
 #else
-    extern "C" __declspec( dllexport ) ICore* createCore( const char* apiVersion )
+    extern "C" StormGraph_Library_Export ICore* createCore( const char* apiVersion )
 #endif
     {
         if ( strcmp( apiVersion, StormGraph_API_Version ) != 0 )
