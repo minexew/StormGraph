@@ -84,6 +84,9 @@ namespace Orion
         graphicsDriver->setCamera( camera );
 
         skybox->render();
+
+        // but why?
+        graphicsDriver->set2dMode( -1.0f, 1.0f );
     }
 
     void MenuScene::onUpdate( double delta )

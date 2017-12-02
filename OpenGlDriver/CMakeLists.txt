@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 project(OpenGlDriver)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(library ${PROJECT_NAME})
 
 set(BUILD_SHARED_LIBS 0)
