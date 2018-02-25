@@ -1,6 +1,8 @@
 # StormGraph
 StormGraph Engine &amp; games ca. 2011
 
+Content is mostly authentic aside from fixes to make compilation possible on modern systems.
+
 ## Storm
 ![Game Screenshot](http://i.imgur.com/QIQKo12.png)
 
