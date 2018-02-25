@@ -1,0 +1,6 @@
+ingame Obj spawn ui
+    + create new sector
+
+gamescene initialization
+parallel loading
+extern item DB
