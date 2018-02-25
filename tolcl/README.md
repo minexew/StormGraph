@@ -2,4 +2,4 @@
 
 The original, playable Tales of Lanthaia client, April 2011.
 
-Required assets are yet to be added.
+Don't expect it to compile; it targets an older version of the StormGraph API which differs significantly.
