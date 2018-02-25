@@ -11,6 +11,9 @@ endif()
 
 set(BUILD_SHARED_LIBS 0)
 
+# controls libjpeg
+set(BUILD_STATIC CACHE BOOL ON)
+
 add_subdirectory(dependencies/libjpeg ${CMAKE_CURRENT_BINARY_DIR}/build-libjpeg)
 add_subdirectory(dependencies/ogg)
 add_subdirectory(dependencies/openal-soft)
