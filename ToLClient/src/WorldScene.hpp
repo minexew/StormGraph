@@ -12,7 +12,7 @@
 
 #include <StormGraph/Scene.hpp>
 
-#include <littl/Socket.hpp>
+#include <littl/TcpSocket.hpp>
 
 namespace TolClient
 {

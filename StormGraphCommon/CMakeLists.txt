@@ -25,11 +25,11 @@ target_compile_definitions(${library} PRIVATE -DStormGraph_Build_Common_DLL=1)
 
 # libcfx2-0.8
 add_dependencies(${library} cfx2_08)
-target_link_libraries(${library} cfx2_08)
+target_link_libraries(${library} PUBLIC cfx2_08)
 
 # littl
 add_dependencies(${library} littl)
-target_link_libraries(${library} littl)
+target_link_libraries(${library} PUBLIC littl)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     include

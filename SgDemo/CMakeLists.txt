@@ -11,7 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory(../StormGraphCore  ${CMAKE_BINARY_DIR}/build-StormGraphCore)
 add_subdirectory(../Gui             ${CMAKE_BINARY_DIR}/build-Gui)
-add_subdirectory(../OpenGLDriver    ${CMAKE_BINARY_DIR}/build-OpenGLDriver)
+add_subdirectory(../OpenGlDriver    ${CMAKE_BINARY_DIR}/build-OpenGlDriver)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_DIR}/${PROJECT_NAME}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

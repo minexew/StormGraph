@@ -15,7 +15,7 @@
 #include <StormGraph/Scene.hpp>
 #include <StormGraph/SoundDriver.hpp>
 
-#include <littl/Socket.hpp>
+#include <littl/TcpSocket.hpp>
 #include <littl/Thread.hpp>
 
 namespace TolClient

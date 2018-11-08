@@ -26,5 +26,9 @@ target_link_libraries(${library} StormGraphCommon)
 add_dependencies(${library} StormGraphCore)
 target_link_libraries(${library} StormGraphCore)
 
+target_include_directories(${PROJECT_NAME} PUBLIC
+        ${PROJECT_SOURCE_DIR}/include
+)
+
 # Export Assets
 set(GUI_ASSETS_DIR ${PROJECT_SOURCE_DIR}/assets PARENT_SCOPE)
