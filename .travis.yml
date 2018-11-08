@@ -9,7 +9,7 @@ addons:
       - clang-5.0
       - g++-6
       - libsdl-dev
-      - libwxgtk2.8-dev
+      - libwxgtk3.0-dev
 before_install:
   - if [ $TRAVIS_OS_NAME == linux ] && [ "$CXX" = "clang++" ]; then export CC=clang-5.0; fi
   - if [ $TRAVIS_OS_NAME == linux ] && [ "$CXX" = "clang++" ]; then export CXX=clang++-5.0; fi
