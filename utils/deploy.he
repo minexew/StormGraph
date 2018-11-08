@@ -1,0 +1,114 @@
+
+~.out( 'StormGraph Engine (c) 2010, 2011 Minexew Games Inc.$n$n' );
+
+if @args.length < 1
+    target = 'Release';
+else
+    target = @args[0];
+
+deployDir = target;
+packageTmpDir = 'deploy.tmp';
+
+schema = Helium::IO::loadCfx2( target + '.cfx2' );
+
+removeDir( deployDir );
+createDir( deployDir );
+
+iterate component in schema
+    switch component.name
+        'Package':
+            createDir( packageTmpDir );
+            buildComponent( component.children, packageTmpDir );
+
+            commandLine = '..\..\utils\Moxillan.exe build ' + deployDir + '/' + component.text;
+
+            if component.compress
+                commandLine = commandLine + ' !' + component.compress;
+
+            commandLine = commandLine + ' @' + packageTmpDir;
+            system( commandLine );
+
+            removeDir( packageTmpDir );
+
+        'Rehash':
+            -- rehash Target_package.cfx2 -pdeployDir/
+            system( '%Rehash% ' + target + '_package.cfx2 -p' + deployDir + '/' );
+
+        'Root':
+            buildComponent( component.children, deployDir );
+
+function buildComponent( items, baseDir )
+    iterate e in items
+        switch e.name
+            'SGE_bin_release':
+                copyFile( '../bin/*.dll', baseDir + '/bin' );
+                copyFile( '../bin/StormGraph.exe', baseDir + '/bin' );
+
+            'SGE_deps_nohelium':
+                copyFile( '../bin/*.dll', baseDir + '/bin' );
+
+            'SGE_gcc4_win32_all':
+                createDir( baseDir + '/bin' );
+                copyFile( '../bin/*.dll', baseDir + '/bin' );
+                copyFile( '../bin/Drivers.cfx2', baseDir + '/bin' );
+
+            'SGE_gcc4_win64_all':
+                createDir( baseDir + '/gcc4-win64' );
+                copyFile( '../gcc4-win64/*.dll', baseDir + '/gcc4-win64' );
+                copyFile( '../gcc4-win64/Drivers.cfx2', baseDir + '/gcc4-win64' );
+
+            'SGE_vc10_win32_all':
+                createDir( baseDir + '/vc10-win32' );
+                copyFile( '../vc10-win32/*.dll', baseDir + '/vc10-win32' );
+                copyFile( '../vc10-win32/Drivers.cfx2', baseDir + '/vc10-win32' );
+
+            'command':
+                system( e.text );
+
+            'dir':
+                if e.to
+                    dest = e.to;
+                else
+                    dest = e.text;
+
+                copyDir( '../' + e.text, baseDir + '/' + dest );
+
+            'file':
+                if e.to
+                    dest = e.to;
+                else
+                    dest = e.text;
+
+                copyFile( '../' + e.text, baseDir + '/' + dest );
+
+            'mkdir':
+                createDir( baseDir + '/' + e.text );
+
+-- TODO: implement those functions in StdAPI
+
+function copyDir( src, dest )
+    src = src.replaceAll( '/', '\' );
+    dest = dest.replaceAll( '/', '\' );
+
+    system( 'mkdir ' + dest );
+    system( 'xcopy /e "' + src + '" "' + dest + '"' );
+
+function copyFile( src, dest )
+    src = src.replaceAll( '/', '\' );
+    dest = dest.replaceAll( '/', '\' );
+
+    system( 'copy "' + src + '" "' + dest + '"' );
+
+function createDir( dest )
+    dest = dest.replaceAll( '/', '\' );
+
+    system( 'mkdir ' + dest );
+
+function removeDir( name )
+    system( 'rmdir /S /Q ' + name );
+
+function system( command )
+    ~.system( command );
+
+    -- debugging
+    ~.out( command, '$n' );
