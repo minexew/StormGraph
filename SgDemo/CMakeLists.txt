@@ -34,6 +34,8 @@ add_dependencies(${PROJECT_NAME} StormGraphCore)
 target_link_libraries(${PROJECT_NAME} StormGraphCore)
 
 add_dependencies(${PROJECT_NAME} Gui)
+target_link_libraries(${PROJECT_NAME} Gui)
+
 add_dependencies(${PROJECT_NAME} OpenGlDriver)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
