@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="TmeFrame">
+		<title>Light Mapping Editor</title>
+		<size>886,509</size>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX|wxMINIMIZE_BOX</style>
+		<object class="wxAuiManager" variable="auiManager" member="yes">
+			<object class="AuiManagerItem">
+				<object class="wxGLCanvas" name="ID_GLCANVAS1" variable="canvas" member="yes">
+					<mDepthSize>16</mDepthSize>
+					<pos>198,12</pos>
+					<handler function="onCanvasPaint" entry="EVT_PAINT" />
+					<handler function="onLmbDown" entry="EVT_LEFT_DOWN" />
+					<handler function="onLmbUp" entry="EVT_LEFT_UP" />
+					<handler function="onMouseMove" entry="EVT_MOTION" />
+					<handler function="onCanvasResize" entry="EVT_SIZE" />
+				</object>
+				<name>Mapping View</name>
+				<standardpanetype>Center</standardpanetype>
+				<caption>Mapping View</caption>
+				<captionvisible>0</captionvisible>
+				<minimizebutton>0</minimizebutton>
+				<maximizebutton>0</maximizebutton>
+				<pinbutton>0</pinbutton>
+				<closebutton>0</closebutton>
+				<dockdirection>Center</dockdirection>
+				<dockfixed>0</dockfixed>
+				<dockabledirection></dockabledirection>
+				<floatable>0</floatable>
+				<movable>0</movable>
+				<destroyonclose>0</destroyonclose>
+				<firstadd>0</firstadd>
+			</object>
+			<object class="AuiManagerItem">
+				<object class="wxAuiNotebook" name="ID_AUINOTEBOOK1" variable="AuiNotebook1" member="yes">
+					<pos>8,300</pos>
+					<minsize>200,0</minsize>
+					<object class="AuiNotebookPage">
+						<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
+							<pos>9,323</pos>
+							<size>117,400</size>
+							<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
+								<cols>1</cols>
+								<rows>2</rows>
+								<growablecols>0</growablecols>
+								<growablerows>0</growablerows>
+								<object class="sizeritem">
+									<object class="wxListBox" name="ID_LISTBOX1" variable="lightMapList" member="yes">
+										<default>-1</default>
+										<handler function="onListSelect" entry="EVT_LISTBOX" />
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON1" variable="createNew" member="yes">
+										<label>Create new</label>
+										<handler function="onCreateNew" entry="EVT_BUTTON" />
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+						</object>
+						<label>Light Maps</label>
+					</object>
+				</object>
+				<name>PaneName</name>
+				<caption>Pane caption</caption>
+				<minimizebutton>0</minimizebutton>
+				<maximizebutton>0</maximizebutton>
+				<dockdirection>Left</dockdirection>
+				<dockfixed>0</dockfixed>
+				<dockabledirection></dockabledirection>
+				<destroyonclose>0</destroyonclose>
+				<firstadd>0</firstadd>
+			</object>
+		</object>
+	</object>
+</wxsmith>

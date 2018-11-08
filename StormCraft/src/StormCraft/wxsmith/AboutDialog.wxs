@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="AboutDialog">
+		<title>About StormCraft...</title>
+		<size>500,300</size>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
+		<object class="wxHtmlWindow" name="ID_HTMLWINDOW1" variable="htmlWindow" member="yes">
+			<pos>0,0</pos>
+			<size>500,300</size>
+		</object>
+	</object>
+</wxsmith>

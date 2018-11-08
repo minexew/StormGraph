@@ -9,6 +9,7 @@ addons:
       - clang-5.0
       - g++-6
       - libsdl-dev
+      - libwxgtk2.8-dev
 before_install:
   - if [ $TRAVIS_OS_NAME == linux ] && [ "$CXX" = "clang++" ]; then export CC=clang-5.0; fi
   - if [ $TRAVIS_OS_NAME == linux ] && [ "$CXX" = "clang++" ]; then export CXX=clang++-5.0; fi
@@ -28,6 +29,7 @@ env:
   - COMPONENT=Duel TARGET=Duel
   - COMPONENT=Launcher TARGET=Launcher
   - COMPONENT=Orion TARGET=Orion
+  - COMPONENT=StormCraft TARGET=StormCraft
   - COMPONENT=ToLClient TARGET=ToLClient
 
 matrix:
