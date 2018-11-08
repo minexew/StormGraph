@@ -28,7 +28,6 @@ env:
   - COMPONENT=Duel TARGET=Duel
   - COMPONENT=Launcher TARGET=Launcher
   - COMPONENT=Orion TARGET=Orion
-  - COMPONENT=SgDemo TARGET=SgDemo
   - COMPONENT=ToLClient TARGET=ToLClient
 
 matrix:
