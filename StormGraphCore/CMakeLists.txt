@@ -22,9 +22,9 @@ set(OGG_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/dependencies/ogg/include)
 set(OGG_LIBRARIES $<TARGET_FILE:ogg>)
 add_subdirectory(dependencies/vorbis)
 
-add_subdirectory(dependencies/zlib ${CMAKE_CURRENT_BINARY_DIR}/build-zlib)
+add_subdirectory(dependencies/zlib-ng ${CMAKE_CURRENT_BINARY_DIR}/build-zlib-ng)
 
-set(ZLIB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/dependencies/zlib ${CMAKE_CURRENT_BINARY_DIR}/build-zlib)
+set(ZLIB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/dependencies/zlib-ng ${CMAKE_CURRENT_BINARY_DIR}/build-zlib)
 add_subdirectory(dependencies/Moxillan2)
 
 # Also add headers so that they're included in generated projects
