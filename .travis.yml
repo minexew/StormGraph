@@ -17,7 +17,7 @@ before_install:
   - if [ $TRAVIS_OS_NAME == linux ] && [ "$CXX" = "g++" ]; then export CC=gcc-6; fi
   - if [ $TRAVIS_OS_NAME == linux ] && [ "$CXX" = "g++" ]; then export CXX=g++-6; fi
 script:
-  - cmake $COMPONENT && make $TARGET
+  - cmake $COMPONENT -DBUILD_SHARED_LIBS=OFF && make $TARGET
 compiler:
   - clang
   - gcc
@@ -30,7 +30,7 @@ env:
   - COMPONENT=Launcher TARGET=Launcher
   - COMPONENT=Orion TARGET=Orion
   - COMPONENT=StormCraft TARGET=StormCraft
-  - COMPONENT=ToLClient TARGET=ToLClient
+  #- COMPONENT=ToLClient TARGET=ToLClient -- pointless to attempt building this in the current state
 
 matrix:
   allow_failures:
