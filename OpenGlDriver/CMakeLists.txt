@@ -49,11 +49,8 @@ if(${CMAKE_VERSION} VERSION_LESS "3.10.0")
         target_link_libraries(${library} GL)
     endif()
 else()
-    find_package(OpenGL REQUIRED
-            COMPONENTS OpenGL
-            OPTIONAL_COMPONENTS GLX)
-    add_dependencies(${library} OpenGL::OpenGL)
-    target_link_libraries(${library} OpenGL::OpenGL)
+    find_package(OpenGL REQUIRED OPTIONAL_COMPONENTS GLX)
+    target_link_libraries(${library} OpenGL::GL)
 endif()
 
 if (OpenGL_GLX_FOUND)
