@@ -5,14 +5,14 @@
 #include <StormGraph/Engine.hpp>
 #include <StormGraph/ResourceManager.hpp>
 
-#include <React/React.hpp>
+#include <littl/File.hpp>
 
 using namespace StormGraph;
 
 namespace TolClient
 {
-    ResourceManager* Resources::bootstrapResMgr, * Resources::uiResMgr, * Resources::musicResMgr;
-    Object<Engine> sg;
+    IResourceManager* Resources::bootstrapResMgr, * Resources::uiResMgr, * Resources::musicResMgr;
+    Object<IEngine> sg;
 
     Resources::Resources()
     {
@@ -27,45 +27,45 @@ namespace TolClient
         li::release( musicResMgr );
     }
 
-    ResourceManager* Resources::getBootstrapResMgr()
+    IResourceManager* Resources::getBootstrapResMgr()
     {
         if ( !bootstrapResMgr )
-            bootstrapResMgr = new ResourceManager( "bootstrapResMgr" );
+            bootstrapResMgr = sg->createResourceManager( "bootstrapResMgr", true );
 
         return bootstrapResMgr;
     }
 
-    ResourceManager* Resources::getUiResMgr( bool create )
+    IResourceManager* Resources::getUiResMgr( bool create )
     {
         if ( !uiResMgr && create )
-            uiResMgr = new ResourceManager( "uiResMgr" );
+            uiResMgr = sg->createResourceManager( "uiResMgr", true );
 
         return uiResMgr;
     }
 
-    ResourceManager* Resources::getMusicResMgr( bool create )
+    IResourceManager* Resources::getMusicResMgr( bool create )
     {
         if ( !musicResMgr && create )
-            musicResMgr = new ResourceManager( "musicResMgr" );
+            musicResMgr = sg->createResourceManager( "musicResMgr", true);
 
         return musicResMgr;
     }
 
-    static void main()
+    static void main( int argc, char** argv )
     {
         bool showConsole = false, dumpLog = false;
 
         try
         {
             // Engine
-            sg = new Engine( "TolClient" );
+            sg = Common::getCore( StormGraph_API_Version )->createEngine( "TolClient", argc, argv );
             sg->addFileSystem( "native:" );
             sg->startup();
 
             // Resource Managers
             Resources resourcesGuard;
 
-            GraphicsDriver* driver = sg->getGraphicsDriver();
+            IGraphicsDriver* driver = sg->getGraphicsDriver();
 
             sg->addFileSystem( "mox:TolClient/en_GB.mox" );
             sg->addFileSystem( "mox:TolClient/Music.0.mox" );
@@ -109,14 +109,14 @@ namespace TolClient
         }
         catch ( Exception ex )
         {
-            Engine::logEvent( "ToLClient", "Exception caught.\n\n"
+            Common::logEvent( "ToLClient", "Exception caught.\n\n"
                     "<b>Function</b>: " + ex.functionName + "\n"
                     "<b>Exception</b>: " + ex.getName() + "\n\n"
                     "<b>Description</b>: " + ex.getDesc() + "\n\n" );
 
             sg.release();
 
-            Engine::displayException( ex, true );
+            Common::displayException( ex, true );
 
             dumpLog = true;
         }
@@ -138,7 +138,7 @@ namespace TolClient
             if ( !file )
                 MessageBox( 0, "FAILED TO SAVE GAME EVENT LOG!!!!!!11111oneoneone", 0, MB_ICONERROR );
             else
-                Engine::printEventLog( file.detach() );
+                Common::printEventLog( file.detach() );
         }
 
         if ( showConsole )
@@ -151,7 +151,7 @@ namespace TolClient
 
 int main( int argc, char** argv )
 {
-    TolClient::main();
+    TolClient::main( argc, argv );
     return 0;
 }
 

@@ -7,10 +7,10 @@
 
 namespace TolClient
 {
-    InitScene::InitScene( GraphicsDriver* driver, const Vector2<unsigned>& windowSize )
+    InitScene::InitScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize )
             : driver( driver ), windowSize( windowSize ), state( preloading ), progress( 0.0f )
     {
-        ResourceManager* bootstrapResMgr = Resources::getBootstrapResMgr();
+        IResourceManager* bootstrapResMgr = Resources::getBootstrapResMgr();
         bootstrapResMgr->addPath( "" );
 
         Reference<ITexture> texture = bootstrapResMgr->getTexture( "TolClient/UI/LoadPiece.png" );
@@ -90,16 +90,16 @@ namespace TolClient
             {
                 Reference<TitleScene> title = new TitleScene( driver, windowSize, preloader.detach() );
                 title->initialize();
-                Engine::getInstance()->changeScene( title.detach() );
+                sg->changeScene( title.detach() );
                 return;
             }
 
-            MaterialProperties query;
+            /*MaterialProperties query;
 
             query.query = MaterialProperties::setColour;
             query.colour = Colour( 0.0f, 0.0f, 0.0f, progress );
 
-            material->query( &query );
+            material->query( &query );*/
         }
     }
 }

@@ -29,7 +29,7 @@
 
 namespace Radiance
 {
-    EpicStyler::EpicStyler( GraphicsDriver* driver, ResourceManager* resMgr )
+    EpicStyler::EpicStyler( IGraphicsDriver* driver, IResourceManager* resMgr )
             : driver( driver ), resMgr( resMgr )
     {
     }

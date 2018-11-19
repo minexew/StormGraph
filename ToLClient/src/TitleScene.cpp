@@ -7,6 +7,8 @@
 #include <StormGraph/Engine.hpp>
 #include <StormGraph/ResourceManager.hpp>
 
+#include <littl/Http.hpp>
+
 // TODO: [$01 GROUP] Temporary, pre-multichar approach
 
 namespace TolClient
@@ -20,7 +22,7 @@ namespace TolClient
     {
         titleScreenBg.release();
 
-        ResourceManager* uiResMgr = Resources::getUiResMgr( false );
+        IResourceManager* uiResMgr = Resources::getUiResMgr( false );
 
         if ( uiResMgr )
             uiResMgr->releaseUnused();
@@ -30,13 +32,13 @@ namespace TolClient
     {
         try
         {
-            ResourceManager* uiResMgr = Resources::getUiResMgr();
+            IResourceManager* uiResMgr = Resources::getUiResMgr();
             uiResMgr->addPath( "" );
 
-            ResourceManager* musicResMgr = Resources::getMusicResMgr();
+            IResourceManager* musicResMgr = Resources::getMusicResMgr();
             musicResMgr->addPath( "" );
 
-            uiResMgr->getTexturePreload( "TolClient/UI/TitleScreen.jpg", 0, &titleScreenBg );
+            uiResMgr->getTexturePreload( "TolClient/UI/TitleScreen.jpg", 0, &*titleScreenBg );
 
             //Sleep( 500 );
             printf( "TitleScenePreloader: Done loading.\n" );
@@ -79,7 +81,7 @@ namespace TolClient
         setStatus( connecting );
         listener->onLoginSessionStatus();
 
-        socket = new TcpSocket( false );
+        socket = TcpSocket::create( false );
 
         // Parse Server URI
         Uri::Parts uriParts;
@@ -88,7 +90,7 @@ namespace TolClient
         int port = uriParts.port.isEmpty() ? 24897 : uriParts.port.toInt();
 
         // Try to connect
-        if ( !socket->connect( uriParts.host, port ) )
+        if ( !socket->connect( uriParts.host, port, true ) )
         {
             setStatus( error, "local.err_connect" );
             listener->onLoginSessionStatus();
@@ -320,8 +322,8 @@ namespace TolClient
         info.serverNews = serverNews;
     }
 
-    TitleScene::TitleScene( GraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader )
-            : preloader( preloader ), state( title ), driver( driver ), windowSize( windowSize ), statusChanged( *this )
+    TitleScene::TitleScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader )
+            : preloader( preloader ), state( title ), driver( driver ), windowSize( windowSize )
     {
     }
 
@@ -337,10 +339,10 @@ namespace TolClient
 
     void TitleScene::initialize()
     {
-        ResourceManager* uiResMgr = Resources::getUiResMgr();
-        ResourceManager* musicResMgr = Resources::getMusicResMgr();
+        IResourceManager* uiResMgr = Resources::getUiResMgr();
+        IResourceManager* musicResMgr = Resources::getMusicResMgr();
 
-        font = uiResMgr->getFont( "Radiance.EpicStyler.Assets/DefaultFont.ttf", 20 );
+        font = uiResMgr->getFont( "Radiance.EpicStyler.Assets/DefaultFont.ttf", 20, IFont::normal );
 
         // "Press any key"
         pressAnyKey.alphaBase = 0.0f;
@@ -366,7 +368,7 @@ namespace TolClient
         keyMappings[printResources] = driver->getKey( "R" );
 
         // Unseres Netzwerkthread
-        realm = Engine::getInstance()->getConfig( "TolClient/realm" );
+        realm = sg->getConfig( "TolClient/realm" );
         loginSession = new LoginSession( realm, this );
         loginSession->start();
 

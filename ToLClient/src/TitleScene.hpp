@@ -15,6 +15,9 @@
 #include <StormGraph/Scene.hpp>
 #include <StormGraph/SoundDriver.hpp>
 
+#include <littl/TcpSocket.hpp>
+#include <littl/Thread.hpp>
+
 namespace TolClient
 {
     static const unsigned CONNECT_TIMEOUT = 5000;
@@ -82,7 +85,7 @@ namespace TolClient
             virtual void run();
     };
 
-    class TitleScene : public Mutex, public Scene, public Radiance::EventListener
+    class TitleScene : public Mutex, public IScene, public Radiance::EventListener
     {
         protected:
             enum
@@ -97,8 +100,8 @@ namespace TolClient
             enum { title, mainMenu } state;
 
             // Multimedia drivers
-            GraphicsDriver* driver;
-            Var<SoundDriver*> soundDriver;
+            IGraphicsDriver* driver;
+            ISoundDriver* soundDriver = nullptr;
 
             // Window, mouse
             Vector2<> windowSize, mouse;
@@ -107,7 +110,7 @@ namespace TolClient
             String realm;
             Object<LoginSession> loginSession;
 
-            MutexVar<bool> statusChanged;
+            volatile bool statusChanged = false;
 
             int16_t keyMappings[maxKey];
             Reference<IFont> font;
@@ -117,7 +120,7 @@ namespace TolClient
                 Reference<IModel> model;
                 List<Transform> transforms;
 
-                Reference<SoundSource> music;
+                Reference<ISoundSource> music;
             }
             background;
 
@@ -139,10 +142,10 @@ namespace TolClient
                 Object<Radiance::Styler> styler;
                 Object<Radiance::UI> ui;
 
-                Var<Radiance::Window*> aboutDlg, registrationDlg;
-                Var<Radiance::Panel*> loginPanel, loggingInPanel, menuPanel;
-                Var<Radiance::Label*> statusText;
-                Var<Radiance::Image*> activityIndicator, watermark;
+                Radiance::Window* aboutDlg = nullptr, * registrationDlg = nullptr;
+                Radiance::Panel* loginPanel = nullptr, * loggingInPanel = nullptr, * menuPanel = nullptr;
+                Radiance::Label* statusText = nullptr;
+                Radiance::Image* activityIndicator = nullptr, * watermark = nullptr;
             }
             ui;
 
@@ -154,7 +157,7 @@ namespace TolClient
             void messageBox( const Vector<>& size, const String& title, const String& text );
 
         public:
-            TitleScene( GraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader );
+            TitleScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader );
             virtual ~TitleScene();
 
             virtual void initialize();

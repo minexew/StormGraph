@@ -14,20 +14,22 @@ namespace TolClient
 {
     using namespace StormGraph;
 
-    extern Object<Engine> sg;
+    extern Object<IEngine> sg;
 
     const static uint32_t clientVersion = 3;
 
+    constexpr double M_PI = 3.1415;
+
     class Resources
     {
-        static ResourceManager* bootstrapResMgr, * uiResMgr, * musicResMgr;
+        static IResourceManager* bootstrapResMgr, * uiResMgr, * musicResMgr;
 
         public:
             Resources();
             ~Resources();
 
-            static ResourceManager* getBootstrapResMgr();
-            static ResourceManager* getUiResMgr( bool create = true );
-            static ResourceManager* getMusicResMgr( bool create = true );
+            static IResourceManager* getBootstrapResMgr();
+            static IResourceManager* getUiResMgr( bool create = true );
+            static IResourceManager* getMusicResMgr( bool create = true );
     };
 }

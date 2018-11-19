@@ -9,10 +9,10 @@
 
 namespace TolClient
 {
-    class InitScene : public Scene
+    class InitScene : public IScene
     {
         protected:
-            GraphicsDriver* driver;
+            IGraphicsDriver* driver;
             Vector2<> windowSize;
 
             enum { preloading, fadeout } state;
@@ -29,10 +29,13 @@ namespace TolClient
             const InitScene& operator = ( const InitScene& );
 
         public:
-            InitScene( GraphicsDriver* driver, const Vector2<unsigned>& windowSize );
+            InitScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize );
             virtual ~InitScene();
 
-            virtual void render();
-            virtual void update( double delta );
+            void init() override {}
+            void uninit() override {}
+
+            void onRender() override;
+            void onUpdate( double delta ) override;
     };
 }
