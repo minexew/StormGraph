@@ -340,6 +340,8 @@ StormCraftFrame::StormCraftFrame( wxWindow* parent, wxWindowID id ) : multipleVi
 
     auiManager->Update();
 
+    this->Show(true);
+
     ctx = new wxGLContext( canvas );
     ctx->SetCurrent( *canvas );
 

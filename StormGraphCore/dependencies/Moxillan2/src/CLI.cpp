@@ -20,7 +20,7 @@ namespace Moxillan
             for ( unsigned i = 2; i < args.getLength(); i++ )
             {
                 if ( args[i].beginsWith( '!' ) )
-                    compression = args[i].dropLeftPart( 1 );
+                    compression = args[i].dropLeftPart( 1 ).toInt();
                 else if ( args[i].beginsWith( '@' ) )
                     rootDir = new Moxillan::NativeDirectoryNode( args[i].dropLeftPart( 1 ), nullptr, compression );
             }
