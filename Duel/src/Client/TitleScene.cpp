@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2011 Xeatheran Minexew
+    Copyright (c) 2011, 2018 Xeatheran Minexew
 
     This software is provided 'as-is', without any express or implied
     warranty. In no event will the authors be held liable for any damages
@@ -26,6 +26,10 @@
 
 #include <StormGraph/Engine.hpp>
 #include <StormGraph/ResourceManager.hpp>
+
+#ifdef Duel_Static_Server
+#include "Shared/Server.hpp"
+#endif
 
 namespace Duel
 {
@@ -57,6 +61,9 @@ namespace Duel
             {
                 changeStatus( startingServer, 0.1f );
 
+#ifdef Duel_Static_Server
+                server = IGameServer::create( engine );
+#else
                 Library* serverLibrary = Common::getAppModule( "Duel", "Server", true );
 
                 InterfaceProvider createInterface = serverLibrary->getEntry<InterfaceProvider>( "createInterface" );
@@ -64,6 +71,7 @@ namespace Duel
                 SG_assert ( serverProvider != nullptr )
 
                 server = serverProvider->createGameServer( engine );
+#endif
                 server->init();
 
                 mapName = engine->getVariableValue( "map_name", true );

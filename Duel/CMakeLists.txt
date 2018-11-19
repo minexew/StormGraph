@@ -23,10 +23,17 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-file(GLOB sources
-    ${PROJECT_SOURCE_DIR}/src/Client/*.cpp
+set(sources
+    ${PROJECT_SOURCE_DIR}/src/Client/Client.cpp
+    ${PROJECT_SOURCE_DIR}/src/Client/GameScene.cpp
+    ${PROJECT_SOURCE_DIR}/src/Client/GameScene.hpp
+    ${PROJECT_SOURCE_DIR}/src/Client/TitleScene.cpp
+    ${PROJECT_SOURCE_DIR}/src/Client/TitleScene.hpp
 
-    ${PROJECT_SOURCE_DIR}/src/*.hpp
+    ${PROJECT_SOURCE_DIR}/src/Server/GameServer.cpp
+    ${PROJECT_SOURCE_DIR}/src/Server/GameServer.hpp
+
+    ${PROJECT_SOURCE_DIR}/src/Shared/Server.hpp
 )
 
 if (BUILD_SHARED_LIBS)
@@ -36,6 +43,9 @@ if (BUILD_SHARED_LIBS)
             CXX_VISIBILITY_PRESET hidden)
 else()
     add_executable(${PROJECT_NAME} ${sources})
+
+    target_compile_definitions(${PROJECT_NAME} PRIVATE -DDuel_Static_Server=1)
+
     # Workaround to avoid filename clash on linux
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "duelgame")
 endif()
@@ -59,7 +69,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    src
+        src
+        src/Shared
 )
 
 if (SDL_DLL)

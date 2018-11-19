@@ -50,8 +50,8 @@ else()
     target_compile_definitions(${library} PUBLIC -DStormGraph_Static_Core=1)
 
     # This *obviously* doesn't belong here, but who cares at this point?
-    target_compile_definitions(${library} PUBLIC -DStormGraph_Static_GraphicsDriver="OpenGl")
-    target_compile_definitions(${library} PUBLIC -DStormGraph_Static_GuiDriver="OpenGl")
+    target_compile_definitions(${library} PRIVATE -DStormGraph_Static_GraphicsDriver="OpenGl")
+    target_compile_definitions(${library} PRIVATE -DStormGraph_Static_GuiDriver="")
 endif()
 
 add_dependencies(${library} StormGraphCommon)

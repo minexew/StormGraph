@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2011 Xeatheran Minexew
+    Copyright (c) 2011, 2018 Xeatheran Minexew
 
     This software is provided 'as-is', without any express or implied
     warranty. In no event will the authors be held liable for any damages
@@ -64,7 +64,7 @@ namespace Duel
         pos.y = -sin( angle ) * dist;
 
         LocalEvent ev;
-        ev.type = entTeleport;
+        ev.type = EventType::entTeleport;
         ev.data.entTeleport.entId = entId;
         ev.data.entTeleport.x = pos.x;
         ev.data.entTeleport.y = pos.y;
@@ -212,7 +212,7 @@ namespace Duel
 
                         // Broadcast locally
                         LocalEvent ev;
-                        ev.type = entMovement;
+                        ev.type = EventType::entMovement;
                         ev.data.entMovement.entId = entId;
                         ev.data.entMovement.x = message.x;
                         ev.data.entMovement.y = message.y;
@@ -235,6 +235,11 @@ namespace Duel
                 }
             }
         }
+    }
+
+    IGameServer* IGameServer::create( IEngine* engine )
+    {
+        return new GameServer( engine );
     }
 
     GameServer::GameServer( IEngine* engine ) : engine( engine )

@@ -6,4 +6,4 @@ set app.vsync           0
 set app.multisample     0
 set app.textureLod      0
 
-;set drawCollisions     1
+set drawCollisions      1

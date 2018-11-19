@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2011 Xeatheran Minexew
+    Copyright (c) 2011, 2018 Xeatheran Minexew
 
     This software is provided 'as-is', without any express or implied
     warranty. In no event will the authors be held liable for any damages
@@ -157,6 +157,7 @@ namespace Duel
     class IGameServer// : public IDedicatedServer
     {
         public:
+            static IGameServer* create( IEngine* engine );
             virtual ~IGameServer() {}
 
             virtual ILocalPlayerEnt* addLocalPlayer( const char* name ) = 0;
