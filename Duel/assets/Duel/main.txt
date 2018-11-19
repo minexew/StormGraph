@@ -1,1 +1,4 @@
 set playername Player
+
+; make it work out of the box
+set map_name uc_0
