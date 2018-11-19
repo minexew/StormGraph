@@ -1,0 +1,136 @@
+class InGame
+{
+    member actors, bullets, camera, cameraZ, keys, map, mapResMrg, overlay, player, renderProgram, renderProgram2D;
+
+    InGame() : sg::GameScene()
+    {
+    }
+
+    load
+    {
+        -- Resource manager
+        @globalResMgr = StormGraph::ResourceManager();
+        mapResMgr = StormGraph::ResourceManager();
+
+        -- Load external resources
+        @globalResMgr.addTexturePath( 'storm/tex/' );
+        @globalResMgr.addModelPath( '' );
+
+        @data = storm::Database( 'storm/data/weapons.cfx2', @globalResMgr );
+        @combat = storm::Combat();
+        @ps = sg::ParticleSystem();
+
+        keys = @sg.loadKeyBindings( 'profile/default.storm/controls.cfx2' );
+
+        @defaultRenderProgram = StormGraph::Program( StormGraph::PixelShader( @sg.loadTextAsset( 'sg_assets/shader/DefaultPixel.glsl' ) ),
+            StormGraph::VertexShader( @sg.loadTextAsset( 'sg_assets/shader/DefaultVertex.glsl' ) ) );
+
+        @hudRenderProgram = StormGraph::Program( StormGraph::PixelShader( @sg.loadTextAsset( 'sg_assets/shader/2DPixel.glsl' ) ),
+            StormGraph::VertexShader( @sg.loadTextAsset( 'sg_assets/shader/2DVertex.glsl' ) ) );
+
+        @overlayRenderProgram = StormGraph::Program( StormGraph::PixelShader( @sg.loadTextAsset( 'sg_assets/shader/2DPixel.glsl' ) ),
+            StormGraph::VertexShader( @sg.loadTextAsset( 'sg_assets/shader/DefaultVertex.glsl' ) ) );
+
+        @font = StormGraph::Font( 'sg_assets/gfx/gravitat.ttf', 11 );
+        @hqFont = StormGraph::Font( 'sg_assets/gfx/gravitat.ttf', 48 );
+
+        -- Load map
+        map = @mapLoader.load( 'dm_Closure', me );
+
+        -- Setup scene
+        camera = StormGraph::TopDownCamera();
+        cameraZ = 15.0;
+
+        me.lights.add( StormGraph::Light( false, [2, 0, 3], nul, ( colour 0.1, 0.03, 0.03 ), ( colour 0.3, 0.2, 0.05 ), 20 ) );
+
+        player = storm::Player( 'player', [0, 0, 0] );
+        player.collision = sg::BoxCollisionModel( [-0.3, -0.3, 1.5], [0.3, 0.3, 0], player.getLocation, player.getScale );
+        player.weapon = @combat.createWeaponByClassName( 'Ti31' );
+        me.sprites.add( player );
+        @player = player;
+
+        enemy = storm::AiEnemy( 'zomb33', [5, 4, 0] );
+        enemy.weapon = @combat.createWeaponByClassName( 'Ti31' );
+        me.sprites.add( enemy );
+
+        overlay = @font.render( 'Move: ' + @sg.getKeyName( keys.moveUp ) + ', ' + @sg.getKeyName( keys.moveDown )
+                + ', ' + @sg.getKeyName( keys.moveLeft ) + ', ' + @sg.getKeyName( keys.moveRight )
+                + ' // zoom in: ' + @sg.getKeyName( keys.zoomIn ) + ', out: ' + @sg.getKeyName( keys.zoomOut ),
+                ( colour 0.4, 0.8, 1.0 ) );
+
+        -- Setup private vars
+        @gameScene = me;
+
+        -- Finish engine config
+    }
+
+    keyStateChange( key, pressed? )
+    {
+        if key == keys.moveUp       keys.moveUpDown = pressed?;
+        if key == keys.moveDown     keys.moveDownDown = pressed?;
+        if key == keys.moveLeft     keys.moveLeftDown = pressed?;
+        if key == keys.moveRight    keys.moveRightDown = pressed?;
+        if key == keys.zoomIn       keys.zoomInDown = pressed?;
+        if key == keys.zoomOut      keys.zoomOutDown = pressed?;
+    }
+
+    mouseButton( x, y, right, down )
+    {
+        player.shooting? = down;
+    }
+
+    mouseMove( x, y )
+    {
+        displayMode = @sg.getDisplayMode();
+        player.angle = @math.angleToY( [displayMode.x / 2, displayMode.y / 2], [x, y] );
+    }
+
+    update
+    {
+        sg::GameScene|update();
+
+        moveSpeed = 4 * @sg.getTimeDelta();
+
+        if keys.moveUpDown          player.move( [0, -1] * moveSpeed );
+        if keys.moveDownDown        player.move( [0, 1] * moveSpeed );
+        if keys.moveLeftDown        player.move( [-1, 0] * moveSpeed );
+        if keys.moveRightDown       player.move( [1, 0] * moveSpeed );
+        if keys.zoomInDown          cameraZ = cameraZ - 15 * @sg.getTimeDelta();
+        if keys.zoomOutDown         cameraZ = cameraZ + 15 * @sg.getTimeDelta();
+
+        @combat.updateBullets();
+        @ps.update();
+    }
+
+    render
+    {
+        -- 3D space, lighting
+        @sg.setPerspectiveProjection();
+
+        @defaultRenderProgram.use();
+
+        camera.moveEye( [player.loc.x, player.loc.y, cameraZ], false );
+        camera.select();
+
+        sg::GameScene|render();
+
+        -- 3D space, no lighting
+        @overlayRenderProgram.use();
+
+        @sg.pushBlendMode( @sg.Blend_add );
+        sg::GameScene|render( 'namePlates' );
+
+        @combat.renderBullets();
+        @ps.render();
+
+        -- 2D space
+        @sg.setOrthoProjection();
+        @hudRenderProgram.use();
+
+        overlay.render2D( 5.0, 5.0 );
+        @font.renderOnscreen( 5.0, 5.0 + @font.getLineSkip(), 'time delta: ' + ( @sg.getTimeDelta() * 1000 ).integer + ' ms', colour 1.0, 0.8, 0.4 );
+        @font.renderOnscreen( 5.0, 5.0 + @font.getLineSkip() * 2, 'displayMode=' + displayMode + '; player.angle=' + player.angle, colour 0.4, 1.0, 0.8 );
+
+        @sg.popBlendMode();
+    }
+}

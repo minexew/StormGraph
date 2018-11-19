@@ -1,0 +1,8 @@
+
+@sg = StormGraph::Engine( 'storm' );
+@math = StormGraph::Math();
+
+@mapLoader = storm::MapLoader();
+
+@sg.setMode( 'Storm pre-Alpha' );
+@sg.run( storm::Title() );

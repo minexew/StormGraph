@@ -1,0 +1,45 @@
+class Actor
+{
+    member angle, loc, model, name, namePlate, weapon;
+
+    Actor( name, model, loc ) : sg::Sprite( local model, local loc ) + ${ isActor: true, name: name }
+    {
+        namePlate = @hqFont.render( name, colour 1.0, 0.8, 0.5 );
+    }
+
+    update
+    {
+        if weapon.reload > 0
+            weapon.reload = weapon.reload - @sg.getTimeDelta();
+    }
+
+    render( mode )
+    {
+        switch mode
+        {
+            nul:
+                sg::Sprite|render();
+
+                if weapon
+                {
+                    weapon.wc.model.renderBegin();
+                    weapon.wc.model.translate( loc + [0, 0, 1.5] );
+                    weapon.wc.model.rotate( angle, [0, 0, 1] );
+                    weapon.wc.model.translate( [0.45, 0, 0] );
+                    weapon.wc.model.render();
+                    weapon.wc.model.renderEnd();
+                }
+
+            'namePlates':
+                center = loc + [0, -0.8, 2.5];
+                size = namePlate.size / 300;
+                namePlate.renderQuad( center + [-size.x, -size.y], center + [size.x, -size.y], center + [size.x, size.y], center + [-size.x, size.y] );
+        }
+    }
+
+    shoot
+    {
+        if weapon
+            isShooting = @combat.shootWeapon( @bullets, weapon, [loc.x + ( cos angle ) * 0.5, loc.y - ( sin angle ) * 0.5, 1.5], angle, 0 );
+    }
+}

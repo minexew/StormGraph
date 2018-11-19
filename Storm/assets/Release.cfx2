@@ -1,0 +1,34 @@
+SGE_bin_release
+
+{ compile game code }
+command: 'compile.bat'
+
+{ shared stuff }
+copyDir: 'profile/default.storm'
+copyDir: 'sg_assets/gfx'
+copyDir: 'sg_assets/shader'
+
+{ game data + assets }
+copyFile: 'Storm.exe'
+copyFile: 'storm.cfx2'
+copyDir: 'storm/bin'
+
+copyDir: 'storm/data'
+copyDir: 'storm/maps'
+copyDir: 'storm/model'
+
+dirExists: 'storm/gfx'
+copyFile: 'storm/gfx/title.jpg'
+
+{ borrowed from postapo }
+dirExists: 'postapo/tex'
+copyFile: 'postapo/tex/box_256.jpg'
+dirExists: 'postapo/model'
+copyFile: 'postapo/model/box_5m.ms3d'
+
+dirExists: 'storm/tex'
+copyFile: 'storm/tex/bull_7mm.jpg'
+copyFile: 'storm/tex/BoxUVW.png'
+copyFile: 'storm/tex/concrete0.jpg'
+copyFile: 'storm/tex/spark.png'
+copyFile: 'storm/tex/wpn_ti31.jpg'

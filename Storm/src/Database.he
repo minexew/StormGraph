@@ -1,0 +1,40 @@
+class Database
+{
+    member bulletClasses, weaponClasses;
+
+    Database( weaponsFileName, resourceManager )
+    {
+        doc = @sg.loadCfx2( weaponsFileName );
+
+        bulletClasses = ();
+        weaponClasses = ();
+
+        bulletClassesNode = sg::Util|findElement( doc, function( e ) return e.name == 'BulletClasses'; );
+        iterate e in bulletClassesNode.children
+            bulletClasses.add( ${ name: e.name, textureName: e.texture, speed: e.speed.number, damage: e.damage.number } );
+
+        weaponClassesNode = sg::Util|findElement( doc, function( e ) return e.name == 'WeaponClasses'; );
+        iterate e in weaponClassesNode.children
+            weaponClasses.add( ${ name: e.name, displayName: e.displayName, modelName: e.model, bcName: e.bullet,
+                    fullAuto: e.mode == 'auto', bullets: e.bullets.integer, speed: e.speed.number / 1000, error: e.error.number, recoil: e.recoil.number, magazine: e.magazine.integer } );
+
+        iterate bc in bulletClasses
+            bc.texture = StormGraph::Texture( bc.textureName );
+            bc.textureName = nul;
+
+        iterate wc in weaponClasses
+        {
+            wc.model = resourceManager.getModel( wc.modelName );
+            wc.modelName = nul;
+
+            iterate bc in bulletClasses
+                if bc.name == wc.bcName
+                    wc.bc = bc;
+                    wc.bcName = nul;
+                    break;
+
+            if !wc.bc
+                @sg.exception( 'Storm.Data', 'Data', 'WeaponClassLinkError', 'Failed to link BulletClass `' + wc.bcName + '` to WeaponClass `' + wc.name + '`' );
+        }
+    }
+}

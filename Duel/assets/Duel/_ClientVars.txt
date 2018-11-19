@@ -1,0 +1,9 @@
+display.driver	OpenGl
+
+app.resolution	1280, 800
+app.fullscreen	0
+app.vsync		0
+app.multisample	4
+app.textureLod	0
+
+;drawCollisions	1

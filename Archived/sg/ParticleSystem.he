@@ -1,0 +1,31 @@
+class ParticleSystem
+{
+    member particles;
+
+    ParticleSystem()
+    {
+        particles = ();
+    }
+
+    add <list>
+    {
+        iterate e in list
+            particles.add( e );
+    }
+
+    update
+    {
+        delta = @sg.getTimeDelta();
+
+        iterate part in particles as i
+            if !part.update( delta )
+                particles.remove( i );
+                i = i - 1;
+    }
+
+    render
+    {
+        iterate part in particles
+            part.render();
+    }
+}

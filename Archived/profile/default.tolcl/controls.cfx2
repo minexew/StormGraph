@@ -1,0 +1,8 @@
+Controls
+    moveUp: W
+    moveDown: S
+    moveLeft: A
+    moveRight: D
+
+    chat: Enter
+    hideUi: U

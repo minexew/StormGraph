@@ -1,0 +1,53 @@
+class GameScene
+{
+    member isLoaded, lights, mouse, sprites;
+
+    GameScene
+    {
+        isLoaded = false;
+        lights = ();
+        mouse = [400, 240];
+        sprites = ();
+    }
+
+    closeButtonAction
+    {
+        return true;
+    }
+
+    findCollision( model )
+    {
+        if !model.collidesWith
+            return nul;
+
+        iterate e in sprites
+            if model.collidesWith( e.collision )
+                return e;
+
+        return nul;
+    }
+
+    --{ findCollisions()
+    {
+    }}--
+
+    mouseMove( x, y )
+    {
+        mouse = [x, y];
+    }
+
+    render( mode )
+    {
+        iterate e in lights
+            e.render try ();
+
+        iterate e in sprites
+            e.render try ( mode );
+    }
+
+    update
+    {
+        iterate e in sprites
+            e.update try ();
+    }
+}

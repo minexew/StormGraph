@@ -1,0 +1,89 @@
+class Combat
+{
+    member bullets;
+
+    Combat()
+    {
+        bullets = ();
+    }
+
+    createWeapon( wc )
+    {
+        return ${ wc: wc, magAmmo: wc.magazine, otherAmmo: wc.magazine * 2 };
+    }
+
+    createWeaponByClassName( className )
+    {
+        iterate wc in @data.weaponClasses
+            if wc.name == className
+                return createWeapon( wc );
+
+        @sg.exception( 'Storm.Combat', 'createWeaponByClassName', 'UnknownWeaponClass', 'Weapon class `' + className + '` not known.' );
+    }
+
+    shootBullet( weapon, origin, angle, actor )
+    {
+        error = ( 2 * ~.random() - 1 ) * weapon.wc.error * ( pi / 180 );
+        finalAngle = angle + error;
+
+        bullet = ${ loc: origin, angle: finalAngle, mult: mult, actor: actor, getLoc: function() return me.loc; };
+
+        loc = origin;
+        mult = 1.0;
+        speed = [cos finalAngle, - sin finalAngle];
+
+        while loc > [-100, -100, -100] && loc < [100, 100, 100]
+            bullet.loc = bullet.loc + speed;
+            @ps.add( sg::Particle( ${ loc: bloc, angle: finalAngle, life: 0.2, alphaVar: -5 }, @globalResMgr.getTexture( 'spark.png' ), [1, 0.025] ) );
+
+            if ( sprite = @gameScene.findCollision( sg::PointCollisionModel( nul, closure function() return me.loc; ) ) )
+                sprite.shot try ( bullet );
+                mult = bullet.mult;
+
+                if mult < 0.01
+                    return;
+    }
+
+    shootWeapon( bullets, weapon, origin, angle, actorID )
+    {
+        if weapon.reload > 0
+            return false;
+
+        iterate i ( 1, weapon.wc.bullets )
+            shootBullet( weapon, origin, angle, nul );
+            --{error = ( 2 * ~.random() - 1 ) * weapon.wc.error * ( pi / 180 );
+            finalAngle = angle + error;
+            speed = weapon.wc.bc.speed * ( 1 - ~.random() * 0.25 );
+
+            bullet = ${ bc: weapon.wc.bc, mult: 1.0, angle: finalAngle, getLocation: function() return me.loc;, loc: origin, speed: [cos finalAngle, - sin finalAngle] * speed, actorID: actorID };
+            bullet.collision = sg::PointCollisionModel( nul, bullet.getLocation );
+            bullets.add( bullet );
+
+            @ps.add( sg::Particle( ${ loc: origin, angle: angle, life: 0.1, vel: 10 * [cos ( finalAngle + pi / 2 ), - sin ( finalAngle + pi / 2 )], alphaVar: -10 }, @globalResMgr.getTexture( 'bull_7mm.jpg' ), [1, 1] ) );}--
+
+        weapon.reload = weapon.wc.speed;
+    }
+
+    renderBullets
+    {
+        iterate bull in bullets
+          if bull
+            @sg.pushBlendMode( @sg.Blend_add );
+            bull.bc.texture.renderPlanar( bull.loc, 0.4, bull.angle );
+            @sg.popBlendMode();
+    }
+
+    updateBullets
+    {
+        iterate bullet in bullets as i
+          if bullet
+            bullet.loc = bullet.loc + bullet.speed * @sg.getTimeDelta();
+
+            if ( sprite = @gameScene.findCollision( bullet.collision ) )
+                sprite.shot try ( bullet );
+
+            if bullet.mult < 0.01 || !( bullet.loc > [-100, -100, -100] && bullet.loc < [100, 100, 100] )
+                bullets.remove( i );
+                i = i - 1;
+    }
+}

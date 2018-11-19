@@ -1,0 +1,32 @@
+{ -- Storm Game Data (c) 2010 Minexew Games Inc. -- }
+
+{
+    Bullet classes
+        speed - bullet airspeed [m/s]
+        damage - basic hit damage [health]
+
+    Weapon classes
+        name - full display name
+        model - weapon model name
+        bullet - weapon bullet class
+        mode - semi, auto
+        bullets - number of bullets shot at once
+        speed - time between each bullet fired [ms]
+        error - max angle inaccuracy [°]
+        recoil - max recoil angle [°]
+        magazine - magazine capacity [bullets]
+}
+
+BulletClasses
+    7mm (texture: 'storm/tex/bull_7mm.jpg', speed: '50', damage: '30')
+
+WeaponClasses
+    Ti31 (displayName: 'Ti.31 Basic', model: 'storm/model/wpn_Ti31.ms3d', bullet: '7mm', mode: 'semi', bullets: '1', speed: '150', error: '5', recoil: '15', magazine: '6')
+
+{
+    Ti31_L
+        name: 'Ti.31 Laser Aim'
+        speed: '400'
+        error: '5'
+        recoil: '20'
+}

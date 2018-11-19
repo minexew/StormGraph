@@ -1,0 +1,24 @@
+
+Root
+    mkdir: 'bin'
+
+Package: 'sg_demo.mox' (compress: 9)
+    dir: 'Driver.OpenGL.Assets'
+    dir: 'Radiance.EpicStyler.Assets'
+    dir: 'sg_demo/res'
+
+    mkdir: 'tolcl/gfx/fonts'
+    file: 'tolcl/gfx/fonts/CELTG___.TTF'
+
+    dir: 'tolcl/model/char0'
+    dir: 'tolcl/tex/char0'
+
+Root
+    SGE_win32_gcc4_all
+
+    file: 'bin/SgDemo.exe'
+    {file: '../../MoxBrowser/bin/MoxExplorer.exe' (to: 'MoxExplorer.exe')}
+    file: 'SgConfig.exe'
+    file: 'sg_demo/sg_demo_Release.cfx2' (to: 'sg_demo.cfx2')
+
+Rehash

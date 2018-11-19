@@ -1,0 +1,49 @@
+class MapLoader
+{
+    MapLoader()
+    {
+    }
+
+    check( mapName )
+    {
+        return @sg.loadCfx2( 'storm/maps/' + mapName + '/' + mapName + '.cfx2', false ) != nul;
+    }
+
+    load( mapName, scene )
+    {
+        doc = @sg.loadCfx2( 'storm/maps/' + mapName + '/' + mapName + '.cfx2' );
+
+        map = ${ name: mapName, classes: () };
+
+        mapInfo = sg::Util|findElement( doc, function( e ) return e.name == 'map'; );
+        map.displayName = mapInfo.text;
+
+        iterate property in mapInfo.children
+            if property.name == 'TexturePath'
+                @globalResMgr.addTexturePath( property.text );
+
+        iterate node in doc
+            if node.name == 'class'
+                newClass = ${ name: node.text, createCollisionModel: function() return nul;, model: node.model, scale: [1, 1, 1] };
+
+                if node.scale
+                    newClass.scale = [1, 1, 1] * node.scale.number;
+
+                iterate property in node.children
+                    if property.name == 'BoxCollisionModel'
+                        newClass.boxCMRange = ( [property.minX, property.minY, property.minZ], [property.maxX, property.maxY, property.maxZ] );
+                        newClass.createCollisionModel = function( sprite ) return sg::BoxCollisionModel( me.boxCMRange[0], me.boxCMRange[1], sprite.getLocation, sprite.getScale );;
+
+                map.classes.add( newClass );
+
+        iterate node in doc
+            if node.name != 'class' && node.name != 'map'
+                objClass = sg::Util|findElement( map.classes, closure function( e ) { return e.name == me.node.name; } );
+
+                if objClass
+                    sprite = sg::Sprite( @globalResMgr.getModel( objClass.model ), [node.x, node.y, node.z] );
+                    sprite.collision = objClass.createCollisionModel( sprite );
+                    sprite.scale = objClass.scale;
+                    scene.sprites.add( sprite );
+    }
+}

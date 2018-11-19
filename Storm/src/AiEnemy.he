@@ -1,0 +1,22 @@
+class AiEnemy
+{
+    member angle, loc, shoot, weapon;
+
+    AiEnemy( name, loc ) : storm::Actor( local name, @globalResMgr.getModel( 'storm/model/human.ms3d' ), local loc )
+    {
+    }
+
+    update
+    {
+        storm::Actor|update();
+
+        if ~.random() < 0.01
+            angle = @math.angleToY( loc, @player.loc );
+            shoot();
+    }
+
+    render( mode )
+    {
+        storm::Actor|render( mode );
+    }
+}

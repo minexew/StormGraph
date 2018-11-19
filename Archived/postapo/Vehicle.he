@@ -1,0 +1,6 @@
+class Vehicle
+{
+    Vehicle( model, loc, vehicleModel ) : sg::Sprite( model, loc ) + ${ vehicleModel: vehicleModel }
+    {
+    }
+}

@@ -1,0 +1,35 @@
+class Player
+{
+    member collision, loc, shooting?, weapon;
+
+    Player( name, loc ) : storm::Actor( local name, @globalResMgr.getModel( 'storm/model/human.ms3d' ), local loc )
+    {
+    }
+
+    move( vec )
+    {
+        goodLoc = loc;
+        loc = loc + vec;
+
+        if @gameScene.findCollision( collision )
+            loc = goodLoc;
+    }
+
+    update
+    {
+        storm::Actor|update();
+
+        if shooting?
+        {
+            me.shoot();
+
+            if !weapon.wc.fullAuto
+                shooting? = false;
+        }
+    }
+
+    render( mode )
+    {
+        storm::Actor|render( mode );
+    }
+}

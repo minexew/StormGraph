@@ -1,0 +1,23 @@
+
+Root
+    { hopefully this may once become unneeded :) }
+    mkdir: 'StormCraft'
+
+Package: 'System.mox' (compress: 9)
+    dir: 'Driver.OpenGL.Assets'
+
+Package: 'StormCraft.mox' (compress: 9)
+    dir: 'StormCraft/Models'
+    dir: 'StormCraft/UI'
+
+Root
+    SGE_gcc4_win64_all
+
+    dir: 'StormCraft/DbgOverlay'
+    dir: 'StormCraft/LocalUI'
+
+    file: 'gcc4-win64/StormCraft.exe'
+    file: 'StormCraft.cfx2'
+    file: 'TestWorld.world'
+
+    file: 'StormCraft/release_run_gcc4_win64.bat' (to: 'RUN STORMCRAFT x64.bat')

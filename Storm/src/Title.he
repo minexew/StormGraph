@@ -1,0 +1,43 @@
+class Title
+{
+    member gameFont, title, pressEnter;
+
+    Title() : sg::GameScene()
+    {
+    }
+
+    load
+    {
+        gameFont = StormGraph::Font( 'sg_assets/gfx/gravitat.ttf', 24 );
+        title = StormGraph::Texture( 'storm/gfx/title.jpg' );
+        pressEnter = gameFont.render( 'left click for SP, right click for MP test', ( colour 0.8, 0.9, 1.0 ) );
+        pressEnter.centerOrigin();
+
+        @sg.setOrthoProjection();
+    }
+
+    mouseButton( x, y, right?, down? )
+    {
+        if !right?
+            @sg.changeScene( storm::InGame() );
+        else
+            -- ~.out( 'server address > ' );
+            -- ip = ~.in();
+            fsi = storm::FullscreenInput( 'server address:' );
+            @sg.changeScene( fsi );
+            --session = storm::Session( ip );
+
+            --while true
+            --    session.update();
+    }
+
+    render
+    {
+        title.render2D( 0, 0 );
+
+        @sg.pushBlendMode( @sg.Blend_add );
+        pressEnter.render2D( 400, 300 );
+        pressEnter.centerOrigin();
+        @sg.popBlendMode();
+    }
+}

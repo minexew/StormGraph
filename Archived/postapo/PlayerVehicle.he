@@ -1,0 +1,17 @@
+class PlayerVehicle
+{
+    member collision, loc;
+
+    PlayerVehicle( model, loc, vehicleModel ) : postapo::Vehicle( model, loc, vehicleModel )
+    {
+    }
+
+    move( vec )
+    {
+        goodLoc = loc;
+        loc = loc + vec;
+
+        if @gameScene.findCollision( collision )
+            loc = goodLoc;
+    }
+}

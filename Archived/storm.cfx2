@@ -1,0 +1,21 @@
+StormGraphApp: 'Storm'
+
+StormGraph
+    width: 800
+    height: 480
+    fullscreen: 0
+    {width: 1680
+    height: 1050
+    fullscreen: 1}
+    multisample: 4
+    vsync: 1
+
+{
+    Storm Roadmap
+     ------------
+
+        - ! enemies
+        - ! partice systems, weapon shooting effects
+        - environment, objects, maps support
+        - multiplayer
+}

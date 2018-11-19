@@ -1,0 +1,13 @@
+StormGraphApp: 'Tales of Lanthaia' (executable: 'Tales of Lanthaia.exe')
+
+StormGraph
+    width: '1280' (default: '1280')
+    height: '800' (default: '800')
+    fullscreen: '0' (default: '0')
+    multisample: '2' (default: '0')
+    vsync: '1' (default: '0')
+    driver: 'OpenGl' (default: OpenGl)
+
+tolcl
+    realm: ''
+    chatFontSize: 10

@@ -1,0 +1,3 @@
+;debugbot
+
+set map_name uc_0

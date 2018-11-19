@@ -1,0 +1,6 @@
+
+@sg = StormGraph::Engine( 'postapo' );
+@math = StormGraph::Math();
+
+@sg.setMode( 'PostApocalyptic' );
+@sg.run( postapo::InGame() );

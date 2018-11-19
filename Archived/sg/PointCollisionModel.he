@@ -1,0 +1,27 @@
+class PointCollisionModel
+{
+    member getOrigin, offset, type;
+
+    PointCollisionModel( offset, getOrigin ) : ${ type: 'point', getOrigin: getOrigin }
+    {
+        if local offset
+            offset = local offset;
+        else
+            offset = [0, 0, 0];
+    }
+
+    collidesWith( model )
+    {
+        if !model || model == me
+            return false;
+
+        loc = getOrigin() + offset;
+
+        switch model.type
+            'box':
+                range = model.getRange();
+                return @math.liesInBox( loc, range[0], range[1] );
+
+        return nul;
+    }
+}

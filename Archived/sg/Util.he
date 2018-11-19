@@ -1,0 +1,27 @@
+class Util
+{
+    findElement( array, test )
+    {
+        iterate e in array
+            if test( e )
+                return e;
+
+        return nul;
+    }
+
+    maximum( a, b )
+    {
+        if a > b
+            return a;
+        else
+            return b;
+    }
+
+    minimum( a, b )
+    {
+        if a < b
+            return a;
+        else
+            return b;
+    }
+}

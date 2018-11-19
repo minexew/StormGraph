@@ -1,0 +1,24 @@
+
+Root
+    { hopefully this may once become unneeded :) }
+    mkdir: 'bin'
+    mkdir: 'Duel'
+
+Package: 'Common.mox' (compress: 9)
+    dir: 'Common'
+
+Package: 'Duel.mox' (compress: 0)
+    dir: 'Duel/Materials'
+    dir: 'Duel/Models'
+    dir: 'Duel/Textures'
+    file: 'Duel/Client.cfx2'
+
+Root
+    SGE_vc10_win32_all
+
+    dir: 'Duel/bin'
+    dir: 'Duel/Maps'
+
+    file: 'Win32.exe'
+
+    file: 'Duel/release_vc10_run.bat' (to: 'RUN DUEL.bat')

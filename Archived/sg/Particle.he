@@ -1,0 +1,48 @@
+
+function maximum( a, b )
+    if a > b
+        return a;
+    else
+        return b;
+
+class Particle
+{
+    member accel, alpha, alphaVar, angle, life, loc, size, texture, vel;
+
+    Particle( properties, texture, size ) : ${ alpha: 1 } + properties
+    {
+        size = local size;
+        texture = local texture;
+    }
+
+    update( delta )
+    {
+        if vel
+        {
+            loc = loc + vel * delta;
+
+            if accel
+                vel = vel + accel * delta;
+        }
+
+        if life != nul
+        {
+            life = life - delta;
+
+            if life <= 0
+                return false;
+        }
+
+        if alphaVar != nul
+            alpha = maximum( 0, alpha + alphaVar * delta );
+
+        return true;
+    }
+
+    render
+    {
+        @sg.pushBlendMode( @sg.Blend_add );
+        texture.renderBillboard( loc, size.x, size.y, angle, alpha );
+        @sg.popBlendMode();
+    }
+}

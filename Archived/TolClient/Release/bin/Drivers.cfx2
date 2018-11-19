@@ -1,0 +1,6 @@
+
+OpenGl: 'Default OpenGL driver' (library: 'OpenGl')
+    {num_lights: 'the number of dynamic lights to enable' (example: 'num_lights: 4')
+    npot: 'explicitly enable or disable Non-Power-Of-2 textures' (example: 'npot:0')
+    npot_max: '(if npot:0) NPOT textures will be upscaled as long as their dimensions doesn\'t exceed the specified size in pixels' (example: 'npot_max:512')}
+    shaders: 'force shaders enable/disable' (example: 'shaders:0')

@@ -1,0 +1,10 @@
+Controls
+    moveUp: W
+    moveDown: S
+    moveLeft: A
+    moveRight: D
+    zoomIn: 'Page Down'
+    zoomOut: 'Page Up'
+
+    debugShadersEnable: 'Home'
+    debugShadersDisable: 'End'

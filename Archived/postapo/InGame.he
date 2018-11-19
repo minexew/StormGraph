@@ -1,0 +1,143 @@
+class InGame
+{
+    member actors, camera, cameraZ, keys, mapResMrg, overlay, player, renderProgram, renderProgram2D;
+
+    InGame() : sg::GameScene()
+    {
+    }
+
+    load
+    {
+        -- Resource manager
+        @globalResMgr = StormGraph::ResourceManager();
+        mapResMgr = StormGraph::ResourceManager();
+
+        -- Load external resources
+        @globalResMgr.addTexturePath( 'postapo/tex/' );
+        @globalResMgr.addModelPath( '' );
+        @globalResMgr.addModelPath( 'postapo/model/' );
+
+        --@combat = postapo::Combat();
+
+        keys = @sg.loadKeyBindings( 'profile/default.storm/controls.cfx2' );
+
+        @defaultRenderProgram = StormGraph::Program( StormGraph::PixelShader( @sg.loadTextAsset( 'sg_assets/shader/DefaultPixel.glsl' ) ),
+            StormGraph::VertexShader( @sg.loadTextAsset( 'sg_assets/shader/DefaultVertex.glsl' ) ) );
+
+        @hudRenderProgram = StormGraph::Program( StormGraph::PixelShader( @sg.loadTextAsset( 'sg_assets/shader/2DPixel.glsl' ) ),
+            StormGraph::VertexShader( @sg.loadTextAsset( 'sg_assets/shader/2DVertex.glsl' ) ) );
+
+        @overlayRenderProgram = StormGraph::Program( StormGraph::PixelShader( @sg.loadTextAsset( 'sg_assets/shader/2DPixel.glsl' ) ),
+            StormGraph::VertexShader( @sg.loadTextAsset( 'sg_assets/shader/DefaultVertex.glsl' ) ) );
+
+        @font = StormGraph::Font( 'sg_assets/gfx/gravitat.ttf', 11 );
+        @hqFont = StormGraph::Font( 'sg_assets/gfx/gravitat.ttf', 48 );
+
+        -- Load map
+        $loadMap( 'arena' );
+
+        --$floorMesh = @globalResMgr.getModel( 'storm/model/closurebase.ms3d' );
+
+        -- Setup scene
+        camera = StormGraph::TopDownCamera();
+        cameraZ = 45;
+
+        me.lights.add( StormGraph::Light( false, [20, 20, 20], nul, ( colour 0.3, 0.2, 0.1 ), ( colour 0.1, 0.1, 0.1 ), 200 ) );
+
+        player = postapo::PlayerVehicle( @globalResMgr.getModel( 'player_ship.ms3d' ), [12.5, 12.5, 0] );
+        player.collision = sg::BoxCollisionModel( [-2, -2.5, 0], [2, 2.5, 5], player.getLocation );
+        me.sprites.add( player );
+
+        overlay = @font.render( 'Move: ' + @sg.getKeyName( keys.moveUp ) + ', ' + @sg.getKeyName( keys.moveDown )
+                + ', ' + @sg.getKeyName( keys.moveLeft ) + ', ' + @sg.getKeyName( keys.moveRight )
+                + ' // zoom in: ' + @sg.getKeyName( keys.zoomIn ) + ', out: ' + @sg.getKeyName( keys.zoomOut ),
+                ( colour 0.4, 0.8, 1.0 ) );
+
+        -- Setup private vars
+        @gameScene = me;
+
+        -- Finish engine config
+    }
+
+    keyStateChange( key, pressed )
+    {
+        if key == keys.moveUp       keys.moveUpDown = pressed;
+        if key == keys.moveDown     keys.moveDownDown = pressed;
+        if key == keys.moveLeft     keys.moveLeftDown = pressed;
+        if key == keys.moveRight    keys.moveRightDown = pressed;
+        if key == keys.zoomIn       keys.zoomInDown = pressed;
+        if key == keys.zoomOut      keys.zoomOutDown = pressed;
+    }
+
+    loadMap( name )
+    {
+        map = @sg.loadCfx2( 'postapo/maps/' + name + '.cfx2' );
+        objects = sg::Util|findElement( map, function( e ) return e.name == 'Objects'; );
+
+        iterate obj in objects.children
+        {
+            loc = [obj.x, obj.y, obj.z];
+
+            switch obj.name
+                'box':
+                    box = sg::Sprite( @globalResMgr.getModel( 'box_5m.ms3d' ), loc );
+                    box.collision = sg::BoxCollisionModel( [-2.5, -2.5, 0], [2.5, 2.5, 5], box.getLocation );
+                    me.sprites.add( box );
+        }
+    }
+
+    mouseButton( x, y, right, down )
+    {
+    }
+
+    mouseMove( x, y )
+    {
+        $infoHud = @font.render( 'mouse=' + [x, y] + ';', colour 0.4, 1.0, 0.8 );
+    }
+
+    update
+    {
+        sg::GameScene|update();
+
+        moveSpeed = 15 * @sg.getTimeDelta();
+
+        if keys.moveUpDown          player.move( [0, -1] * moveSpeed );
+        if keys.moveDownDown        player.move( [0, 1] * moveSpeed );
+        if keys.moveLeftDown        player.move( [-1, 0] * moveSpeed );
+        if keys.moveRightDown       player.move( [1, 0] * moveSpeed );
+        if keys.zoomInDown          cameraZ = cameraZ - 15 * @sg.getTimeDelta();
+        if keys.zoomOutDown         cameraZ = cameraZ + 15 * @sg.getTimeDelta();
+
+        --@combat.updateBullets();
+    }
+
+    render
+    { 
+        @sg.setPerspectiveProjection();
+
+        @defaultRenderProgram.use();
+
+        camera.moveEye( [player.loc.x, player.loc.y, cameraZ], false );
+        camera.select();
+
+        sg::GameScene|render();
+        -- $floorMesh.render();
+
+        -- @combat.renderBullets();
+
+        @sg.pushBlendMode( @sg.Blend_add );
+
+        -- @overlayRenderProgram.use();
+        -- sg::GameScene|render( 'namePlates' );
+
+        @sg.setOrthoProjection();
+        @hudRenderProgram.use();
+        overlay.render2D( 5.0, 5.0 );
+
+        tdo = @font.render( 'time delta: ' + ( @sg.getTimeDelta() * 1000 ).integer + ' ms', ( colour 1.0, 0.8, 0.4 ) );
+        tdo.render2D( 5.0, 5.0 + @font.getLineSkip() );
+        $infoHud.render2D try ( 5.0, 5.0 + @font.getLineSkip() * 2 );
+
+        @sg.popBlendMode();
+    }
+}

@@ -1,0 +1,40 @@
+class Sprite
+{
+    member angle, collision, loc, model, scale;
+
+    Sprite( model, loc )
+    {
+        angle = 0;
+        loc = local loc;
+        model = local model;
+        scale = [1, 1, 1];
+    }
+
+    getLocation
+        return loc;
+
+    getScale
+        return scale;
+
+    render( mode )
+    {
+        if model && mode == nul
+        {
+            model.renderBegin();
+            model.translate( loc );
+            model.rotate( angle, [0, 0, 1] );
+            model.scale( scale );
+            model.render();
+            model.renderEnd();
+        }
+    }
+
+    shot( bullet )
+    {
+        -- scale = scale / ( 1 + bullet.mult * 0.2 );
+		iterate i ( 1, 5 )
+			@ps.add( sg::Particle( ${ loc: bullet.loc, angle: bullet.angle + pi + ~.random() * 0.0 - 0.00025, life: 0.1, alphaVar: -10 }, @globalResMgr.getTexture( 'spark.png' ), [1, 0.025] ) );
+
+        bullet.mult = 0;
+    }
+}

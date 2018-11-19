@@ -1,0 +1,38 @@
+{ --- Map Properites --- }
+map: 'Closure Alpha'
+    TexturePath: 'postapo/tex/'
+
+{ --- Object Class Definitions --- }
+class: Box (model: 'postapo/model/box_5m.ms3d', scale: '0.2')
+    BoxCollisionModel (minX: '-2.5', minY: '-2.5', minZ: '0', maxX: '2.5', maxY: '2.5', maxZ: '5')
+
+class: Ground (model: 'storm/model/closurebase.ms3d')
+
+{ --- Object Instances --- }
+Ground: 'ground0'
+
+Box (x: -2, y: -2, z: 0)
+Box (x: 2, y: -2, z: 0)
+
+Box (x: -2, y: -1, z: 0)
+Box (x: -2, y: -1, z: 1)
+Box (x: 2, y: -1, z: 0)
+Box (x: 2, y: -1, z: 1)
+
+Box (x: -2, y: 0, z: 0)
+Box (x: -2, y: 0, z: 1)
+Box (x: -1, y: 0, z: 1)
+Box (x: -1, y: 0, z: 2)
+Box (x: 0, y: 0, z: 2)
+Box (x: 1, y: 0, z: 1)
+Box (x: 1, y: 0, z: 2)
+Box (x: 2, y: 0, z: 0)
+Box (x: 2, y: 0, z: 1)
+
+Box (x: -2, y: 1, z: 0)
+Box (x: -2, y: 1, z: 1)
+Box (x: 2, y: 1, z: 0)
+Box (x: 2, y: 1, z: 1)
+
+Box (x: -2, y: 2, z: 0)
+Box (x: 2, y: 2, z: 0)

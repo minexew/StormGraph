@@ -1,0 +1,22 @@
+
+Root
+    { hopefully this may once become unneeded :) }
+    mkdir: 'bin'
+    mkdir: 'StormCraft'
+
+Package: 'System.mox' (compress: 9)
+    dir: 'Driver.OpenGL.Assets'
+
+Package: 'StormCraft.mox' (compress: 9)
+    dir: 'StormCraft/Models'
+    dir: 'StormCraft/UI'
+
+Root
+    SGE_gcc4_win32_all
+
+    dir: 'StormCraft/LocalUI'
+
+    file: 'bin/StormCraft.exe'
+    file: 'StormCraft.cfx2'
+
+    file: 'StormCraft/release_run.bat' (to: 'RUN STORMCRAFT.bat')

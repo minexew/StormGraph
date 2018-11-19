@@ -1,0 +1,32 @@
+class BoxCollisionModel
+{
+    member getOrigin, getScale, max, min, type;
+
+    BoxCollisionModel( a, b, getOrigin, getScale ) : ${ type: 'box', getOrigin: getOrigin, getScale: getScale }
+    {
+        max = [sg::Util|maximum( a.x, b.x ), sg::Util|maximum( a.y, b.y ), sg::Util|maximum( a.z, b.z )];
+        min = [sg::Util|minimum( a.x, b.x ), sg::Util|minimum( a.y, b.y ), sg::Util|minimum( a.z, b.z )];
+    }
+
+    collidesWith( model )
+    {
+        if !model || model == me
+            return false;
+
+        range = getRange();
+
+        switch model.type
+            'box':
+                range2 = model.getRange();
+                return @math.boxesCollide( range[0], range[1], range2[0], range2[1] );
+
+        return nul;
+    }
+
+    getRange
+    {
+        origin = getOrigin();
+        scale = getScale();
+        return ( origin + min * scale, origin + max * scale );
+    }
+}

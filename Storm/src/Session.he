@@ -1,0 +1,41 @@
+class Session
+{
+    member buf, listener, state, socket;
+
+    Session( ip, listener )
+    {
+        listener = local listener;
+
+        socket = Helium::IO::TcpSocket( false );
+
+        if !socket.connect( ip, #4210 )
+            @sg.exception( 'storm::Session', 'Session', 'ConectionFailed', 'Failed to connect to `' + ip + '`' );
+
+        state = 'queued';
+        buf = Helium::IO::StreamBuffer();
+
+        buf.writeUint16( #0001 );       -- queue_client_hello
+        socket.send( buf );
+    }
+
+    update
+    {
+        if socket.receive( buf )
+            messageID = buf.readUint16();
+
+            switch messageID
+                #1000:
+                    serverName = buf.readString();
+                    modName = buf.readString();
+                    mapName = buf.readString() + '_v1';
+                    modHttpDownload = buf.readString();
+                    mapHttpDownload = buf.readString();
+
+                    ~.out( 'Connected to server: ', serverName, '$n' );
+                    ~.out( 'Current Mod: ', modName, ' (', modHttpDownload, ')', '$n' );
+                    ~.out( 'Current Map: ', mapName, ' (', mapHttpDownload, ')', '$n' );
+
+                    if !@mapLoader.check( mapName )
+                        ~.out( 'Map not available: ', mapName, '$n' );
+    }
+}

@@ -1,0 +1,51 @@
+class FullscreenInput
+{
+    member font, input, message, onSubmit, text, title;
+
+    FullscreenInput( message, onSubmit ) : sg::GameScene()
+    {
+        message = local message;
+        onSubmit = local onSubmit;
+        text = '';
+    }
+
+    load
+    {
+        font = StormGraph::Font( 'sg_assets/gfx/gravitat.ttf', 24 );
+        message = font.render( message, ( colour 0.8, 0.7, 0.6 ) );
+        title = StormGraph::Texture( 'storm/gfx/title.jpg' );
+
+        @sg.setOrthoProjection();
+        refresh();
+    }
+
+    keyStateChange( key, down?, char )
+    {
+        if !down?
+            return;
+
+        if key == #08
+            text = text.left( text.length - 1 );
+        else if key == #0D
+            onSubmit();
+        else if char
+            text = text + char.ascii;
+
+        refresh();
+    }
+
+    refresh
+    {
+        input = font.render( text + '_', ( colour 1.0, 0.9, 0.8 ) );
+    }
+
+    render
+    {
+        title.render2D( 0, 0 );
+
+        @sg.pushBlendMode( @sg.Blend_add );
+        message.render2D( 100, 300 );
+        input.render2D( 160, 350 );
+        @sg.popBlendMode();
+    }
+}

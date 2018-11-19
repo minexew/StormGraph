@@ -1,0 +1,23 @@
+serverless	- "#null"
+local server	- "#nonet"
+host server	- "#"
+connect to	- "", "localhost", "445.435.56.133"
+
+1. Sandbox
+set map_name sp_sand_box
+connect #null
+
+2. Campaign
+set map_name uc_0
+connect #nonet
+
+3. Coop Campaign
+set map_name uc_0
+connect #
+
+4. Host Server
+set map_name mp_Octagon
+connect #
+
+5. Connect
+connect 1.2.3.4
