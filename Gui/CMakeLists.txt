@@ -9,10 +9,29 @@ if (NOT TARGET StormGraphCore)
 endif()
 
 # Also add headers so that they're included in generated projects
-file(GLOB sources
-    ${PROJECT_SOURCE_DIR}/src/UI/*.cpp
+set(sources
+    ${PROJECT_SOURCE_DIR}/src/Radiance/EpicStyler.cpp
+    ${PROJECT_SOURCE_DIR}/src/Radiance/Models.hpp
+    ${PROJECT_SOURCE_DIR}/src/Radiance/OnyxStyler.cpp
+    ${PROJECT_SOURCE_DIR}/src/Radiance/Radiance.cpp
+    ${PROJECT_SOURCE_DIR}/src/Radiance/Styler.cpp
+    ${PROJECT_SOURCE_DIR}/src/Radiance/Widget.cpp
 
-    ${PROJECT_SOURCE_DIR}/src/UI/*.hpp
+    ${PROJECT_SOURCE_DIR}/src/UI/BoxSizer.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/Button.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/Driver.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/Gui.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/GuiDriver.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/GuiDriver.hpp
+    ${PROJECT_SOURCE_DIR}/src/UI/Panel.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/PopupMenu.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/ProgressBar.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/ScrollBar.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/StaticText.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/TableLayout.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/TextBox.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/Widgets.cpp
+    ${PROJECT_SOURCE_DIR}/src/UI/Window.cpp
 )
 
 if (BUILD_SHARED_LIBS)

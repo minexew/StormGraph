@@ -9,32 +9,25 @@
 #pragma once
 
 #include <StormGraph/Engine.hpp>
-#include <StormGraph/Sys.hpp>
-#include <StormGraph/VisualInterface.hpp>
 
 namespace TolClient
 {
-    using namespace StormBase;
     using namespace StormGraph;
-    using namespace StormRender;
 
-    extern IEngine* engine;
-
-    extern IR* r;
-    extern ISys* sys;
+    extern Object<Engine> sg;
 
     const static uint32_t clientVersion = 3;
 
     class Resources
     {
-        static IResourceManager* bootstrapResMgr, * uiResMgr, * musicResMgr;
+        static ResourceManager* bootstrapResMgr, * uiResMgr, * musicResMgr;
 
         public:
             Resources();
             ~Resources();
 
-            static IResourceManager* getBootstrapResMgr();
-            static IResourceManager* getUiResMgr( bool create = true );
-            static IResourceManager* getMusicResMgr( bool create = true );
+            static ResourceManager* getBootstrapResMgr();
+            static ResourceManager* getUiResMgr( bool create = true );
+            static ResourceManager* getMusicResMgr( bool create = true );
     };
 }

@@ -12,11 +12,9 @@
 
 #include <StormGraph/Scene.hpp>
 
-#include <littl/TcpSocket.hpp>
-
 namespace TolClient
 {
-    class WorldScene: public IScene
+    class WorldScene: public Scene
     {
         public:
             WorldScene( TcpSocket* socket );

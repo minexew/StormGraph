@@ -1,0 +1,17 @@
+Package: 'tolcl' (output: 'version')
+
+{ Update Mirrors }
+Mirror: 'update.lanthaia.net/tolcl2'
+
+{ Base Files }
+Md5: 'bin'
+Md5: 'TolClient'
+Md5: 'SgConfig.exe'
+Md5: 'System.mox'
+
+{ Editable Files }
+Exist: 'TolClient.cfx2'
+
+{ Launcher }
+Exist: 'oalinst.exe'
+Copy: 'Tales of Lanthaia.exe'

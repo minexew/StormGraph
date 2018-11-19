@@ -10,13 +10,10 @@
 
 #include "TolClient.hpp"
 
-/*#include <Radiance/Radiance.hpp>*/
+#include <Radiance/Radiance.hpp>
 #include <StormGraph/GraphicsDriver.hpp>
 #include <StormGraph/Scene.hpp>
 #include <StormGraph/SoundDriver.hpp>
-
-#include <littl/TcpSocket.hpp>
-#include <littl/Thread.hpp>
 
 namespace TolClient
 {
@@ -85,7 +82,7 @@ namespace TolClient
             virtual void run();
     };
 
-    class TitleScene : public Mutex, public IScene/*, public Radiance::EventListener*/
+    class TitleScene : public Mutex, public Scene, public Radiance::EventListener
     {
         protected:
             enum
@@ -100,11 +97,11 @@ namespace TolClient
             enum { title, mainMenu } state;
 
             // Multimedia drivers
-            IGraphicsDriver* graphicsDriver;
-            Var<ISoundDriver*> soundDriver;
+            GraphicsDriver* driver;
+            Var<SoundDriver*> soundDriver;
 
             // Window, mouse
-            //Vector2<> windowSize, mouse;
+            Vector2<> windowSize, mouse;
 
             // Login session stuff
             String realm;
@@ -115,16 +112,14 @@ namespace TolClient
             int16_t keyMappings[maxKey];
             Reference<IFont> font;
 
-            Reference<ITexture> background;
-
-            /*struct
+            struct
             {
                 Reference<IModel> model;
                 List<Transform> transforms;
 
-                Reference<ISoundSource> music;
+                Reference<SoundSource> music;
             }
-            background;*/
+            background;
 
             struct
             {
@@ -139,7 +134,7 @@ namespace TolClient
             }
             progressIndicator;
 
-            /*struct
+            struct
             {
                 Object<Radiance::Styler> styler;
                 Object<Radiance::UI> ui;
@@ -149,7 +144,7 @@ namespace TolClient
                 Var<Radiance::Label*> statusText;
                 Var<Radiance::Image*> activityIndicator, watermark;
             }
-            ui;*/
+            ui;
 
         private:
             TitleScene( const TitleScene& );
@@ -159,22 +154,20 @@ namespace TolClient
             void messageBox( const Vector<>& size, const String& title, const String& text );
 
         public:
-            TitleScene( TitleScenePreloader* preloader );
+            TitleScene( GraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader );
             virtual ~TitleScene();
 
-            virtual void init();
-            virtual void uninit() {}
+            virtual void initialize();
 
             virtual void onKeyState( int16_t key, Key::State state, Unicode::Char character );
             void onLoginSessionStatus();
             virtual void onMouseMoveTo( const Vector2<int>& mouse );
-            /*virtual void onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties );*/
+            virtual void onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties );
 
-            virtual void onRender() override;
-            virtual void onUpdate( double delta ) override;
-
+            virtual void render();
             void sessionError( const String& errorName );
             void showMainMenu();
+            virtual void update( double delta );
     };
 }
 

@@ -1,0 +1,79 @@
+
+Root
+    { hopefully this may once become unneeded :) }
+    mkdir: 'bin'
+    mkdir: 'TolClient'
+    {mkdir: 'tolcl/gfx'}
+
+Package: 'System.mox' (compress: 9)
+    dir: 'Driver.OpenGL.Assets'
+
+Package: 'TolClient/Music.0.mox'
+    dir: 'TolClient/Music'
+
+Package: 'TolClient/UI.mox' (compress: 9)
+    dir: 'Radiance.EpicStyler.Assets'
+    dir: 'TolClient/Gfx/Fonts'
+    dir: 'TolClient/UI'
+
+Package: 'TolClient/en_GB.mox' (compress: 9)
+    dir: 'TolClient/Localized'
+
+{Package: 'common/sg_assets.mox' (compress: 9)
+    dir: 'sg_assets/shader'
+
+Package: 'tolcl/heightmap.mox'
+    dir: 'tolcl/heightmap'
+
+Package: 'tolcl/world.mox' (compress: 9)
+    dir: 'tolcl/area'
+    dir: 'tolcl/world'
+
+Package: 'tolcl/gfx_fonts.mox' (compress: 9)
+    dir: 'tolcl/gfx/fonts' (to: 'tolcl/gfx')
+
+Package: 'tolcl/gfx_ui.mox' (compress: 9)
+    dir: 'tolcl/gfx/item'
+    dir: 'tolcl/gfx/ui' (to: 'tolcl/gfx')
+
+Package: 'tolcl/model_char0.mox' (compress: 9)
+    dir: 'tolcl/model/char0' (to: 'tolcl/model')
+
+Package: 'tolcl/model_env0.mox' (compress: 9)
+    dir: 'tolcl/model/env0' (to: 'tolcl/model')
+
+Package: 'tolcl/model_item0.mox' (compress: 9)
+    dir: 'tolcl/model/item0' (to: 'tolcl/model')
+
+Package: 'tolcl/model_struct0.mox' (compress: 9)
+    dir: 'tolcl/model/struct0' (to: 'tolcl/model')
+
+Package: 'tolcl/tex_char0.mox'
+    dir: 'tolcl/tex/char0' (to: 'tolcl/tex')
+
+Package: 'tolcl/tex_env0.mox'
+    dir: 'tolcl/tex/env0' (to: 'tolcl/tex')
+
+Package: 'tolcl/tex_item0.mox'
+    dir: 'tolcl/tex/item0' (to: 'tolcl/tex')
+
+Package: 'tolcl/tex_struct0.mox'
+    dir: 'tolcl/tex/struct0' (to: 'tolcl/tex')
+}
+Root
+    SGE_win32_gcc4_all
+
+    { game binaries & config }
+    file: 'Tales of Lanthaia.exe'
+    file: 'bin/TolClient.exe'
+    file: 'ToLClient/Release_TolClient.cfx2' (to: 'TolClient.cfx2')
+
+    { OpenAL. FFFFUUUUUU }
+    file: 'oalinst.exe'
+
+    { other game data & assets }
+    {file: 'tolcl/gfx/title.jpg'
+
+    dir: 'profile/default.tolcl'}
+
+Rehash
