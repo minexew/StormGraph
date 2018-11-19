@@ -21,8 +21,6 @@
     distribution.
 */
 
-#pragma once
-
 #include "GameServer.hpp"
 
 #include <StormGraph/Engine.hpp>
@@ -420,9 +418,9 @@ namespace Duel
                     if ( i->isSpawned() )
                     {
                         const Vector<> pos = i->getPos();
-                        String name = i->getName();
+                        String name = String( i->getName() ).leftPart( 30 );
 
-                        EntSpawnMessageHeader message = { MSG_ENT_SPAWN, i->getId(), pos.x, pos.y, pos.z, name.getNumBytes() };
+                        EntSpawnMessageHeader message = { MSG_ENT_SPAWN, i->getId(), pos.x, pos.y, pos.z, ( uint16_t ) name.getNumBytes() };
 
                         ent->bufferMessage( message );
                         ent->bufferRaw( name, name.getNumBytes() );
@@ -439,9 +437,9 @@ namespace Duel
                     if ( i->isSpawned() )
                     {
                         const Vector<> pos = i->getPos();
-                        String name = i->getName();
+                        String name = String( i->getName() ).leftPart( 30 );
 
-                        EntSpawnMessageHeader message = { MSG_ENT_SPAWN, i->getId(), pos.x, pos.y, pos.z, name.getNumBytes() };
+                        EntSpawnMessageHeader message = { MSG_ENT_SPAWN, i->getId(), pos.x, pos.y, pos.z, ( uint16_t ) name.getNumBytes() };
 
                         ent->bufferMessage( message );
                         ent->bufferRaw( name, name.getNumBytes() );
@@ -456,9 +454,9 @@ namespace Duel
                 if ( i->isSpawned() )
                 {
                     const Vector<> pos = i->getPos();
-                    String name = i->getName();
+                    String name = String( i->getName() ).leftPart( 30 );
 
-                    EntSpawnMessageHeader message = { MSG_ENT_SPAWN, i->getId(), pos.x, pos.y, pos.z, name.getNumBytes() };
+                    EntSpawnMessageHeader message = { MSG_ENT_SPAWN, i->getId(), pos.x, pos.y, pos.z, ( uint16_t ) name.getNumBytes() };
 
                     ent->bufferMessage( message );
                     ent->bufferRaw( name, name.getNumBytes() );
@@ -511,9 +509,9 @@ namespace Duel
                     continue;
 
                 const Vector<> pos = ent->getPos();
-                String name = ent->getName();
+                String name = String( ent->getName() ).leftPart( 30 );
 
-                EntSpawnMessageHeader message = { MSG_ENT_SPAWN, entId, pos.x, pos.y, pos.z, name.getNumBytes() };
+                EntSpawnMessageHeader message = { MSG_ENT_SPAWN, entId, pos.x, pos.y, pos.z, ( uint16_t ) name.getNumBytes() };
 
                 i->bufferMessage( message );
                 i->bufferRaw( name, name.getNumBytes() );

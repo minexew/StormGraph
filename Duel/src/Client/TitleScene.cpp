@@ -319,6 +319,9 @@ namespace Duel
 
             switch ( connecting.thread->status )
             {
+                case ConnectingThread::connecting:
+                    break;
+
                 case ConnectingThread::connected:
                     connecting.label->setText( "Connected." );
                     break;

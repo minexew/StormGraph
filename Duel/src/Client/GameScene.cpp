@@ -339,6 +339,10 @@ namespace Duel
 
                 switch ( ev.type )
                 {
+                    case EventType::entAngleZ:
+                        // TODO: implement
+                        break;
+
                     case EventType::entList:
                     {
                         //printf( "ClientSide Entity spawn #%i\n", ev.data.entSpawn->entId );

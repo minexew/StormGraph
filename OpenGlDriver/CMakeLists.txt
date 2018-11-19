@@ -46,7 +46,7 @@ if(${CMAKE_VERSION} VERSION_LESS "3.10.0")
     if (WIN32)
         target_link_libraries(${library} opengl32)
     else()
-        target_link_libraries(${library} GL GLX)
+        target_link_libraries(${library} GL)
     endif()
 else()
     find_package(OpenGL REQUIRED
