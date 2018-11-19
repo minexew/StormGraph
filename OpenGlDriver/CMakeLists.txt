@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.1)
 project(OpenGlDriver)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -42,11 +42,19 @@ target_link_libraries(${library} freetype)
 target_include_directories(${library} PRIVATE "${PROJECT_SOURCE_DIR}/dependencies/freetype2/include")
 
 # OpenGL
-find_package(OpenGL REQUIRED
-        COMPONENTS OpenGL
-        OPTIONAL_COMPONENTS GLX)
-add_dependencies(${library} OpenGL::OpenGL)
-target_link_libraries(${library} OpenGL::OpenGL)
+if(${CMAKE_VERSION} VERSION_LESS "3.10.0")
+    if (WIN32)
+        target_link_libraries(${library} opengl32)
+    else()
+        target_link_libraries(${library} GL GLX)
+    endif()
+else()
+    find_package(OpenGL REQUIRED
+            COMPONENTS OpenGL
+            OPTIONAL_COMPONENTS GLX)
+    add_dependencies(${library} OpenGL::OpenGL)
+    target_link_libraries(${library} OpenGL::OpenGL)
+endif()
 
 if (OpenGL_GLX_FOUND)
     add_dependencies(${library} OpenGL::GLX)
