@@ -42,10 +42,16 @@ target_link_libraries(${library} freetype)
 target_include_directories(${library} PRIVATE "${PROJECT_SOURCE_DIR}/dependencies/freetype2/include")
 
 # OpenGL
-if (WIN32)
-    target_link_libraries(${library} opengl32)
-else()
-    target_link_libraries(${library} GL)
+find_package(OpenGL REQUIRED
+        COMPONENTS OpenGL
+        OPTIONAL_COMPONENTS GLX)
+add_dependencies(${library} OpenGL::OpenGL)
+target_link_libraries(${library} OpenGL::OpenGL)
+
+if (OpenGL_GLX_FOUND)
+    add_dependencies(${library} OpenGL::GLX)
+    target_link_libraries(${library} OpenGL::GLX)
+    target_compile_definitions(${library} PRIVATE -DOpenGlDriver_With_GLX=1)
 endif()
 
 # SDL

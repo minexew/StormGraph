@@ -32,6 +32,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#ifdef OpenGlDriver_With_GLX
+#include <GL/glx.h>
+#endif
+
 #define GL_TEXTURE_FREE_MEMORY_ATI  0x87FC
 
 namespace OpenGlDriver
@@ -1028,11 +1032,15 @@ namespace OpenGlDriver
             if ( !wanted )
                 continue;
 
+            // TODO: this definitely shouldn't be decided at runtime
             if ( !rendererOnly )
                 glApi.pointers[i] = ( void ( * )() ) SDL_GL_GetProcAddress( glLinkTable[i].name );
             else {
 #ifdef __li_MSW
                 glApi.pointers[i] = ( void ( * )() ) wglGetProcAddress( glLinkTable[i].name );
+#elif OpenGlDriver_With_GLX
+                glApi.pointers[i] = ( void ( * )() ) glXGetProcAddress(
+                        reinterpret_cast<const GLubyte*>( glLinkTable[i].name ) );
 #else
                 SG_assert4(!rendererOnly, "Renderer-only mode is currently not supported on this platform.");
 #endif
