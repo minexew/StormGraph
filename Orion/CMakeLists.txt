@@ -14,8 +14,12 @@ add_subdirectory(../StormGraphCore  ${CMAKE_BINARY_DIR}/build-StormGraphCore)
 add_subdirectory(../Gui             ${CMAKE_BINARY_DIR}/build-Gui)
 add_subdirectory(../OpenGlDriver    ${CMAKE_BINARY_DIR}/build-OpenGLDriver)
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIST_DIR}/${PROJECT_NAME}/bin)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_DIR}/${PROJECT_NAME}/bin)
+if (BUILD_SHARED_LIBS)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIST_DIR}/${PROJECT_NAME}/bin)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_DIR}/${PROJECT_NAME}/bin)
+else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_DIR})
+endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
@@ -24,10 +28,25 @@ file(GLOB sources
     ${PROJECT_SOURCE_DIR}/src/*.hpp
 )
 
-add_library(${PROJECT_NAME} SHARED ${sources})
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Client"
-        C_VISIBILITY_PRESET hidden
-        CXX_VISIBILITY_PRESET hidden)
+set(sources
+        ${PROJECT_SOURCE_DIR}/src/GameScene.cpp
+        ${PROJECT_SOURCE_DIR}/src/GameScene.hpp
+        ${PROJECT_SOURCE_DIR}/src/MenuScene.cpp
+        ${PROJECT_SOURCE_DIR}/src/MenuScene.hpp
+        ${PROJECT_SOURCE_DIR}/src/Orion.cpp
+)
+
+if (BUILD_SHARED_LIBS)
+    add_library(${PROJECT_NAME} SHARED ${sources})
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Client"
+            C_VISIBILITY_PRESET hidden
+            CXX_VISIBILITY_PRESET hidden)
+else()
+    add_executable(${PROJECT_NAME} ${sources})
+
+    # Workaround to avoid filename clash on linux
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "oriongame")
+endif()
 
 add_dependencies(${PROJECT_NAME} StormGraphCommon)
 target_link_libraries(${PROJECT_NAME} StormGraphCommon)
@@ -37,6 +56,11 @@ target_link_libraries(${PROJECT_NAME} StormGraphCore)
 
 add_dependencies(${PROJECT_NAME} Gui)
 add_dependencies(${PROJECT_NAME} OpenGlDriver)
+
+if (NOT BUILD_SHARED_LIBS)
+    target_link_libraries(${PROJECT_NAME} Gui)
+    target_link_libraries(${PROJECT_NAME} OpenGlDriver)
+endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     include
