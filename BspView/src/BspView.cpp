@@ -185,7 +185,7 @@ namespace BspView
     {
         //sceneGraph = sg->createSceneGraph( "sceneGraph" );
         sceneGraph = bspResMgr->loadSceneGraph( "_SCENEGRAPH", true );
-        sceneGraph->addModel( bspResMgr->getModel( fileName ), Vector<>(), Vector<>() );
+        sceneGraph->addStaticModel( bspResMgr->getStaticModel( fileName, true, true ) );
 
         //bsp = bspResMgr->getModel( fileName );
         camera = Camera( Vector<>(), 100, M_PI * 1.5f, M_PI_4 );
@@ -273,6 +273,7 @@ namespace BspView
             sg->setVariable( "fileName", sg->createStringVariable( "_BSP" ), true );
 
             sg->startup();
+            sg->startupGraphics();
 
             IGraphicsDriver* driver = sg->getGraphicsDriver();
 

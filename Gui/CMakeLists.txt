@@ -15,10 +15,14 @@ file(GLOB sources
     ${PROJECT_SOURCE_DIR}/src/UI/*.hpp
 )
 
-add_library(${library} SHARED ${sources})
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Gui"
-        C_VISIBILITY_PRESET hidden
-        CXX_VISIBILITY_PRESET hidden)
+if (BUILD_SHARED_LIBS)
+    add_library(${library} SHARED ${sources})
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Gui"
+            C_VISIBILITY_PRESET hidden
+            CXX_VISIBILITY_PRESET hidden)
+else()
+    add_library(${library} ${sources})
+endif()
 
 add_dependencies(${library} StormGraphCommon)
 target_link_libraries(${library} StormGraphCommon)

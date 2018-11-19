@@ -16,12 +16,22 @@ file(GLOB sources
     ${PROJECT_SOURCE_DIR}/include/StormGraph/*.hpp
 )
 
-add_library(${library} SHARED ${sources})
-set_target_properties(${library} PROPERTIES OUTPUT_NAME "Common"
-        C_VISIBILITY_PRESET hidden
-        CXX_VISIBILITY_PRESET hidden)
+if (BUILD_SHARED_LIBS)
+    add_library(${library} SHARED ${sources})
+    set_target_properties(${library} PROPERTIES OUTPUT_NAME "Common"
+            C_VISIBILITY_PRESET hidden
+            CXX_VISIBILITY_PRESET hidden)
 
-target_compile_definitions(${library} PRIVATE -DStormGraph_Build_Common_DLL=1)
+    target_compile_definitions(${library} PRIVATE -DStormGraph_Build_Common_DLL=1)
+else()
+    add_library(${library} ${sources})
+    target_compile_definitions(${library} PUBLIC -DStormGraph_Static_Common=1)
+
+    # Because the relevant check is brilliantly done in Common.cpp, we need to have this here
+    target_compile_definitions(${library} PRIVATE -DStormGraph_Static_Core=1)
+endif()
+
+
 
 # libcfx2-0.8
 add_dependencies(${library} cfx2_08)

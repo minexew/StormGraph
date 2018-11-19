@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2011 Xeatheran Minexew
+    Copyright (c) 2011, 2018 Xeatheran Minexew
 
     This software is provided 'as-is', without any express or implied
     warranty. In no event will the authors be held liable for any damages
@@ -33,6 +33,14 @@
 #include <StormGraph/SoundDriver.hpp>
 
 #include <littl/File.hpp>
+
+#ifdef StormGraph_Static_GraphicsDriver
+extern "C" StormGraph::IGraphicsDriver* createGraphicsDriver( const char* driverName, StormGraph::IEngine* engine );
+#endif
+
+#ifdef StormGraph_Static_GuiDriver
+extern "C" StormGraph::IGuiDriver* createGuiDriver( StormGraph::IEngine* engine, const char* driverName );
+#endif
 
 namespace StormGraph
 {
@@ -481,6 +489,9 @@ namespace StormGraph
     {
         if ( guiDriver == nullptr )
         {
+#ifdef StormGraph_Static_GuiDriver
+            guiDriver = createGuiDriver( this, "" );
+#else
             guiDriverLibrary = Common::getModule( "Gui", true );
 
             GuiDriverProvider provider = guiDriverLibrary->getEntry<GuiDriverProvider>( "createGuiDriver" );
@@ -489,6 +500,7 @@ namespace StormGraph
                 throw Exception( "StormGraph.Engine.getGuiDriver", "EntryPointNotFound", "Failed to load GUI module" );
 
             guiDriver = provider( this, "" );
+#endif
 
             if ( guiDriver == nullptr )
                 throw Exception( "StormGraph.Engine.getGuiDriver", "DriverConfigurationError", "Failed to create a GUI driver instance" );
@@ -894,7 +906,11 @@ namespace StormGraph
 
     void Engine::startupGraphics()
     {
+#ifdef StormGraph_Static_GraphicsDriver
+        graphicsDriver = createGraphicsDriver( StormGraph_Static_GraphicsDriver, this );
+#else
         loadGraphicsDriver( getVariableValue( "display.driver", true ) );
+#endif
 
         graphicsDriver->startup();
     }

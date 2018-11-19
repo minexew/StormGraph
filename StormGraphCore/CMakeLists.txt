@@ -39,10 +39,20 @@ file(GLOB sources
     ${PROJECT_SOURCE_DIR}/include/StormGraph/IO/*.hpp
 )
 
-add_library(${library} SHARED ${sources})
-set_target_properties(${library} PROPERTIES OUTPUT_NAME "Core"
-        C_VISIBILITY_PRESET hidden
-        CXX_VISIBILITY_PRESET hidden)
+if (BUILD_SHARED_LIBS)
+    add_library(${library} SHARED ${sources})
+    set_target_properties(${library} PROPERTIES OUTPUT_NAME "Core"
+            C_VISIBILITY_PRESET hidden
+            CXX_VISIBILITY_PRESET hidden)
+else()
+    add_library(${library} ${sources})
+
+    target_compile_definitions(${library} PUBLIC -DStormGraph_Static_Core=1)
+
+    # This *obviously* doesn't belong here, but who cares at this point?
+    target_compile_definitions(${library} PUBLIC -DStormGraph_Static_GraphicsDriver="OpenGl")
+    target_compile_definitions(${library} PUBLIC -DStormGraph_Static_GuiDriver="OpenGl")
+endif()
 
 add_dependencies(${library} StormGraphCommon)
 target_link_libraries(${library} StormGraphCommon)
