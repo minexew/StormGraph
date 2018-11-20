@@ -59,7 +59,7 @@ namespace Radiance
             void animateProperty( unsigned name, float value );
             virtual Vector<float> beginRender( const Vector<float>& pos );
             virtual void endRender();
-            virtual void* getInterface( const char* name );
+            //virtual void* getInterface( const char* name );
             virtual void setProperty( unsigned name, int value );
             virtual void setProperty( unsigned name, float value );
             virtual void setProperty( unsigned name, const String& value );

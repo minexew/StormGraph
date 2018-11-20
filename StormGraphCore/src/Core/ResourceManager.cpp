@@ -655,15 +655,17 @@ namespace StormGraph
         return 0;
     }
 
+    ISoundStream* SoundDriver_newVorbisSoundStream( InputStream* input, const char* name );
+
     ISoundStream* ResourceManager::openSoundStream( const String& name )
     {
-        /*if ( name.endsWith( ".ogg" ) )
+        if ( name.endsWith( ".ogg" ) )
         {
             SeekableInputStream* input = fileSystem->openInput( name );
 
             if ( input )
-                return new VorbisSoundStream( input, name );
-        }*/
+                return SoundDriver_newVorbisSoundStream( input, name );
+        }
 
         return nullptr;
     }

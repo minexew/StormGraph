@@ -10,7 +10,7 @@
 
 #include "TolClient.hpp"
 
-/*#include <Radiance/Radiance.hpp>*/
+#include <Radiance/Radiance.hpp>
 #include <StormGraph/GraphicsDriver.hpp>
 #include <StormGraph/Scene.hpp>
 #include <StormGraph/SoundDriver.hpp>
@@ -85,7 +85,7 @@ namespace TolClient
             virtual void run();
     };
 
-    class TitleScene : public Mutex, public IScene/*, public Radiance::EventListener*/
+    class TitleScene : public Mutex, public IScene, public Radiance::EventListener
     {
         protected:
             enum
@@ -100,31 +100,29 @@ namespace TolClient
             enum { title, mainMenu } state;
 
             // Multimedia drivers
-            IGraphicsDriver* graphicsDriver;
-            Var<ISoundDriver*> soundDriver;
+            IGraphicsDriver* driver;
+            ISoundDriver* soundDriver = nullptr;
 
             // Window, mouse
-            //Vector2<> windowSize, mouse;
+            Vector2<> windowSize, mouse;
 
             // Login session stuff
             String realm;
             Object<LoginSession> loginSession;
 
-            MutexVar<bool> statusChanged;
+            volatile bool statusChanged = false;
 
             int16_t keyMappings[maxKey];
             Reference<IFont> font;
 
-            Reference<ITexture> background;
-
-            /*struct
+            struct
             {
                 Reference<IModel> model;
                 List<Transform> transforms;
 
                 Reference<ISoundSource> music;
             }
-            background;*/
+            background;
 
             struct
             {
@@ -139,17 +137,17 @@ namespace TolClient
             }
             progressIndicator;
 
-            /*struct
+            struct
             {
                 Object<Radiance::Styler> styler;
                 Object<Radiance::UI> ui;
 
-                Var<Radiance::Window*> aboutDlg, registrationDlg;
-                Var<Radiance::Panel*> loginPanel, loggingInPanel, menuPanel;
-                Var<Radiance::Label*> statusText;
-                Var<Radiance::Image*> activityIndicator, watermark;
+                Radiance::Window* aboutDlg = nullptr, * registrationDlg = nullptr;
+                Radiance::Panel* loginPanel = nullptr, * loggingInPanel = nullptr, * menuPanel = nullptr;
+                Radiance::Label* statusText = nullptr;
+                Radiance::Image* activityIndicator = nullptr, * watermark = nullptr;
             }
-            ui;*/
+            ui;
 
         private:
             TitleScene( const TitleScene& );
@@ -159,19 +157,19 @@ namespace TolClient
             void messageBox( const Vector<>& size, const String& title, const String& text );
 
         public:
-            TitleScene( TitleScenePreloader* preloader );
+            TitleScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader );
             virtual ~TitleScene();
 
-            virtual void init();
-            virtual void uninit() {}
+            void init() override;
+            void uninit() override {}
 
-            virtual void onKeyState( int16_t key, Key::State state, Unicode::Char character );
+            void onKeyState( int16_t key, Key::State state, Unicode::Char character ) override;
             void onLoginSessionStatus();
-            virtual void onMouseMoveTo( const Vector2<int>& mouse );
-            /*virtual void onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties );*/
+            void onMouseMoveTo( const Vector2<int>& mouse ) override;
+            void onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties ) override;
 
-            virtual void onRender() override;
-            virtual void onUpdate( double delta ) override;
+            void onRender() override;
+            void onUpdate( double delta ) override;
 
             void sessionError( const String& errorName );
             void showMainMenu();

@@ -747,11 +747,12 @@ namespace StormGraph
         else
             timeDelta = 0.0;*/
 
+        auto dt = deltaTimer.getMicros() / 1000000.0;
+        deltaTimer.start();
+
         if ( deltaTimer.isStarted() )
             iterate ( eventListeners )
-                eventListeners.current()->onUpdate( deltaTimer.getMicros() / 1000000.0 );
-
-        deltaTimer.start();
+                eventListeners.current()->onUpdate( dt );
 
 #ifdef _DEBUG
         static int counter = 0;

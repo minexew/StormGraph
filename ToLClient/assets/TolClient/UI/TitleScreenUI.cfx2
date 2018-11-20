@@ -1,0 +1,47 @@
+{ username & password panel }
+Panel: 'loginPanel' (size: '520, 156', visible: '0')
+    Label (pos: '240, 18', text: '\\wUsername:', align: '6')
+    Label (pos: '240, 68', text: '\\wPassword:', align: '6')
+
+    Input: 'username' (pos: '280, 0', size: '240, 36')
+    Input: 'password' (pos: '280, 50', size: '240, 36', type: 'password')
+
+    Button: 'loginBtn' (pos: '204, 120', size: '112, 36', text: '\\wLog In')
+
+Panel: 'loggingInPanel' (size: '520, 86', visible: '0')
+    Label: 'loggingInLabel' (pos: '260, 43', text: '\\wLogging in...', align: '5')
+
+{ corner menu }
+Panel: 'menuPanel' (size: '112, 86', visible: '0')
+    Button: 'register' (pos: '0, 0', size: '112, 36', text: '\\lRegister')
+    Button: 'about' (pos: '0, 50', size: '112, 36', text: '\\wAbout')
+
+{ About dialog }
+Window: 'aboutDlg' (size: '528, 336', title: 'About Tales of Lanthaia', visible: '0')
+    Label (pos: '264, 10', text: '\\#579Tales of Lanthaia Game Client', align: '1')
+    Label (pos: '264, 30', text: '\\#369Copyright (c) 2011 The Tales of Lanthaia Project', align: '1')
+
+    Label (pos: '20, 70', text: '\\wCore Developers:')
+    Label (pos: '40, 90', text: '\\#975SnYper\\w - Graphics')
+    Label (pos: '40, 110', text: '\\#579Minexew\\w - Game Code')
+
+    Label (pos: '20, 150', text: '\\wExternal Developers:')
+    Label (pos: '40, 170', text: '\\#795Danol - \\wMusic')
+
+    Button: 'aboutCloseBtn' (pos: '208, 272', size: '112, 36', text: 'I get it')
+
+{ Registration dialog }
+Window: 'registrationDlg' (size: '464, 272', title: 'Account Registration', visible: '0')
+    Label (pos: '20, 38', text: '\\wUsername:', align: '4')
+    Label (pos: '20, 88', text: '\\wPassword:', align: '4')
+    Label (pos: '20, 138', text: '\\wConfirm Password:', align: '4')
+
+    Input: 'username' (pos: '204, 20', size: '240, 36')
+    Input: 'password' (pos: '204, 70', size: '240, 36', type: 'password')
+    Input: 'password2' (pos: '204, 120', size: '240, 36', type: 'password')
+
+    Button: 'registrationRegisterBtn' (pos: '176, 180', size: '112, 36', text: '\\wRegister!')
+
+    Label: 'registrationStatus' (pos: '20, 248', text: '\\wi\'m a placeholder :P', align: '4')
+
+{ character select pane }

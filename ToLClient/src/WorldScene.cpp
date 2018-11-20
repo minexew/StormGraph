@@ -18,7 +18,7 @@ namespace TolClient
     {
     }
 
-    void WorldScene::render()
+    void WorldScene::onRender()
     {
     }
 }

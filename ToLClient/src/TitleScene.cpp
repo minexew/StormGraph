@@ -33,11 +33,14 @@ namespace TolClient
         try
         {
             IResourceManager* uiResMgr = Resources::getUiResMgr();
+            uiResMgr->addPath( "" );
+
             IResourceManager* musicResMgr = Resources::getMusicResMgr();
+            musicResMgr->addPath( "" );
 
-            uiResMgr->getTexturePreload( "TolClient/UI/TitleScreen.jpg", nullptr, &*titleScreenBg );
+            uiResMgr->getTexturePreload( "TolClient/UI/TitleScreen.jpg", 0, &*titleScreenBg );
 
-            Sleep( 5000 );
+            //Sleep( 500 );
             printf( "TitleScenePreloader: Done loading.\n" );
         }
         catch ( Exception ex )
@@ -78,7 +81,7 @@ namespace TolClient
         setStatus( connecting );
         listener->onLoginSessionStatus();
 
-        socket = new TcpSocket( false );
+        socket = TcpSocket::create( false );
 
         // Parse Server URI
         Uri::Parts uriParts;
@@ -87,7 +90,7 @@ namespace TolClient
         int port = uriParts.port.isEmpty() ? 24897 : uriParts.port.toInt();
 
         // Try to connect
-        if ( !socket->connect( uriParts.host, port ) )
+        if ( !socket->connect( uriParts.host, port, true ) )
         {
             setStatus( error, "local.err_connect" );
             listener->onLoginSessionStatus();
@@ -241,8 +244,8 @@ namespace TolClient
                         }
                         else if ( messageName == "login.entering_world" )
                         {
-                            MessageBoxA( 0, "Entering world!", "Success", MB_OK );
-                            //sg->changeScene( new WorldScene( 0 ) );
+                            //MessageBoxA( 0, "Entering world!", "Success", MB_OK );
+                            sg->changeScene( new WorldScene( 0 ) );
                             return;
                         }
                         // TODO: [$01] End of Automatic enter-world
@@ -319,10 +322,9 @@ namespace TolClient
         info.serverNews = serverNews;
     }
 
-    TitleScene::TitleScene( TitleScenePreloader* preloader )
-            : preloader( preloader ), state( title ), statusChanged( *this )
+    TitleScene::TitleScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader )
+            : preloader( preloader ), state( title ), driver( driver ), windowSize( windowSize )
     {
-        graphicsDriver = engine->getGraphicsDriver();
     }
 
     TitleScene::~TitleScene()
@@ -340,14 +342,13 @@ namespace TolClient
         IResourceManager* uiResMgr = Resources::getUiResMgr();
         IResourceManager* musicResMgr = Resources::getMusicResMgr();
 
-        //font = uiResMgr->getFont( "Radiance.EpicStyler.Assets/DefaultFont.ttf", 20, IFont::normal );
-        font = uiResMgr->getFont( "TolClient/UI/Celtic.ttf", 20, IFont::normal );
+        font = uiResMgr->getFont( "Radiance.EpicStyler.Assets/DefaultFont.ttf", 20, IFont::normal );
 
         // "Press any key"
         pressAnyKey.alphaBase = 0.0f;
 
         // Background
-        /*IMaterial* material = driver->createSolidMaterial( "TitleBgMat", Colour::white(), preloader->titleScreenBg->getFinalized() );
+        IMaterial* material = driver->createSolidMaterial( "TitleBgMat", Colour::white(), preloader->titleScreenBg->getFinalized() );
 
         // Background Plane
         {
@@ -360,25 +361,23 @@ namespace TolClient
             plane.withUvs = true;
             plane.material = material;
             background.model = driver->createPlane( "TitleBg", &plane );
-        }*/
-
-        background = preloader->titleScreenBg->getFinalized();
+        }
 
         // Keyz
-        keyMappings[leftMouseButton] = graphicsDriver->getKey( "Left Mouse Button" );
-        keyMappings[printResources] = graphicsDriver->getKey( "R" );
+        keyMappings[leftMouseButton] = driver->getKey( "Left Mouse Button" );
+        keyMappings[printResources] = driver->getKey( "R" );
 
         // Unseres Netzwerkthread
-        realm = engine->getConfig( "TolClient/realm" );
+        realm = sg->getConfig( "TolClient/realm" );
         loginSession = new LoginSession( realm, this );
         loginSession->start();
 
-        graphicsDriver->setClearColour( Colour( 0.0f, 0.0f, 0.0f, 0.0f ) );
-        graphicsDriver->set2dMode( -1.0f, 1.0f );
+        driver->setClearColour( Colour( 0.0f, 0.0f, 0.0f, 0.0f ) );
+        driver->set2dMode( -1.0f, 1.0f );
 
         // UI
-        /*ui.styler = new Radiance::EpicStyler( driver, uiResMgr->reference() );
-        ui.ui = new Radiance::UI( ui.styler, Vector<>(), windowSize );
+        ui.styler = new Radiance::EpicStyler( driver, uiResMgr->reference() );
+        ui.ui = new Radiance::UI( sg, ui.styler, Vector<>(), windowSize );
 
         {
             cfx2::Document activityIndicatorDoc = sg->loadCfx2Asset( "TolClient/UI/activityIndicator.cfx2" );
@@ -411,15 +410,15 @@ namespace TolClient
 
         ui.loginPanel->moveTo( Vector<>( ( windowSize.x - ui.loginPanel->getSize().x ) / 2, windowSize.y * 3.0f / 5.0f ).round() );
         ui.loggingInPanel->moveTo( Vector<>( ( windowSize.x - ui.loggingInPanel->getSize().x ) / 2, windowSize.y * 3.0f / 5.0f ).round() );
-        ui.menuPanel->moveTo( Vector<>( windowSize ) - ui.menuPanel->getSize() - Vector<>( 20.0f, 20.0f ).round() );*/
+        ui.menuPanel->moveTo( Vector<>( windowSize ) - ui.menuPanel->getSize() - Vector<>( 20.0f, 20.0f ).round() );
 
-        /*soundDriver = engine->getSoundDriver();
+        soundDriver = sg->getSoundDriver();
 
-        if ( soundDriver != nullptr )
+        if ( soundDriver )
         {
             background.music = soundDriver->createSoundSource( musicResMgr->getSoundStream( "TolClient/Music/ToL_main_theme_d01.ogg" ) );
             background.music->play();
-        }*/
+        }
 
         //
         preloader.release();
@@ -427,24 +426,24 @@ namespace TolClient
 
     void TitleScene::messageBox( const Vector<>& size, const String& title, const String& text )
     {
-        /*Radiance::MessageBox* msgBox = new Radiance::MessageBox( ui.styler, ( Vector<>( windowSize ) - size ) / 2, size, title, text );
+        Radiance::MessageBox* msgBox = new Radiance::MessageBox( ui.styler, ( Vector<>( windowSize ) - size ) / 2, size, title, text );
         msgBox->setName( "msgBox" );
         msgBox->setOnClose( this );
-        ui.ui->doModal( msgBox );*/
+        ui.ui->doModal( msgBox );
     }
 
     void TitleScene::onKeyState( int16_t key, Key::State state, Unicode::Char character )
     {
-        //if ( ui.ui && ui.ui->onKeyState( character, state ) )
-        //    return;
+        if ( ui.ui && ui.ui->onKeyState( character, state ) )
+            return;
 
-        /*if ( key == keyMappings[leftMouseButton] )
+        if ( key == keyMappings[leftMouseButton] )
         {
             if ( state == Key::pressed )
                 ui.ui->mouseDown( mouse );
             else if ( state == Key::released )
                 ui.ui->mouseUp( mouse );
-        }*/
+        }
 
         if ( this->state == title && state == Key::pressed )
             showMainMenu();
@@ -460,15 +459,15 @@ namespace TolClient
 
     void TitleScene::onMouseMoveTo( const Vector2<int>& mouse )
     {
-        /*if ( ui.ui )
+        if ( ui.ui )
         {
             ui.ui->mouseMove( mouse );
 
             this->mouse = mouse;
-        }*/
+        }
     }
 
-    /*void TitleScene::onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties )
+    void TitleScene::onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties )
     {
         if ( widget->getName() == "about" )
         {
@@ -528,46 +527,43 @@ namespace TolClient
                 ui.registrationDlg->hide();
             }
         }
-    }*/
+    }
 
     void TitleScene::onRender()
     {
-        const Vector2<float> viewport = graphicsDriver->getViewportSize();
-        const float scale = li::minimum<>( viewport.x / background->getDimensions().x, viewport.y / background->getDimensions().y );
-
-        graphicsDriver->draw2dCenteredRotated( background, scale, 0.0f, Colour::white() );
+        background.model->render( background.transforms );
 
         if ( state == title )
-            font->renderString( viewport.x / 2, viewport.y  * 2 / 3, "- Press any key -", Colour( 1.0f, 1.0f, 1.0f, sin( fabs( pressAnyKey.alphaBase ) ) ), IFont::centered | IFont::middle );
+            font->renderString( windowSize.x / 2, windowSize.y  * 2 / 3, "- Press any key -", Colour( 1.0f, 1.0f, 1.0f, sin( fabs( pressAnyKey.alphaBase ) ) ), IFont::centered | IFont::middle );
 
-        /*if ( ui.ui )
-            ui.ui->render();*/
+        if ( ui.ui )
+            ui.ui->render();
     }
 
     void TitleScene::sessionError( const String& errorName )
     {
         if ( errorName == "result.err_account_exists" )
-            messageBox( Vector<>( 500.0f, 144.0f ), "\\rError", engine->getString( "account_exists" ) + "\n" + engine->getString( "please_choose_different_name" ) );
+            messageBox( Vector<>( 500.0f, 144.0f ), "\\rError", sg->getString( "account_exists" ) + "\n" + sg->getString( "please_choose_different_name" ) );
         else if ( errorName == "result.err_login_incorrect" )
-            messageBox( Vector<>( 440.0f, 144.0f ), "\\rError", engine->getString( "login_incorrect" ) + "\n" + engine->getString( "please_try_again" ) );
+            messageBox( Vector<>( 440.0f, 144.0f ), "\\rError", sg->getString( "login_incorrect" ) + "\n" + sg->getString( "please_try_again" ) );
         else if ( errorName == "result.err_name_invalid" )
         {
             // TODO: The same message for character creation
-            messageBox( Vector<>( 400.0f, 144.0f ), "\\rError", engine->getString( "specified_username_invalid" ) + "\n" + engine->getString( "please_choose_different_name" ) );
+            messageBox( Vector<>( 400.0f, 144.0f ), "\\rError", sg->getString( "specified_username_invalid" ) + "\n" + sg->getString( "please_choose_different_name" ) );
         }
         else
-            messageBox( Vector<>( 500.0f, 100.0f ), "\\rError", engine->getString( "unknown_error" ) + ": \\l" + errorName );
+            messageBox( Vector<>( 500.0f, 100.0f ), "\\rError", sg->getString( "unknown_error" ) + ": \\l" + errorName );
     }
 
     void TitleScene::showMainMenu()
     {
-        /*ui.aboutDlg->hide();
+        ui.aboutDlg->hide();
         ui.registrationDlg->hide();
 
         ui.loginPanel->show();
         ui.menuPanel->show();
 
-        ui.loggingInPanel->hide();*/
+        ui.loggingInPanel->hide();
 
         this->state = mainMenu;
     }
@@ -582,7 +578,7 @@ namespace TolClient
                 pressAnyKey.alphaBase -= 2.0f;
         }
 
-        /*if ( ui.ui )
+        if ( ui.ui )
         {
             ui.ui->update( delta );
 
@@ -652,6 +648,6 @@ namespace TolClient
 
             if ( ui.activityIndicator )
                 ui.activityIndicator->setRotation( ui.activityIndicator->getRotation() - M_PI * 4.0f * delta );
-        }*/
+        }
     }
 }

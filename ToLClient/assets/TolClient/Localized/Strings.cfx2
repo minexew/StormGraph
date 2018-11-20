@@ -1,0 +1,25 @@
+{
+    Tales of Lanthaia Localization File
+    (c) 2011 The Tales of Lanthaia Project
+
+    Language: default,en_GB
+    Inherits: -
+}
+
+{
+    Shared/General
+}
+unknown_error: 'Unknown error'
+
+{
+    Title Screen, Main Menu
+}
+account_exists: 'An account with that username already exists.'
+connection_timed_out: 'Connection timed out.'
+login_incorrect: 'Incorrect username and/or password.'
+please_choose_different_name: 'Please choose a different name.'
+please_try_again: 'Please try again.'
+registering: 'Registration in progress...'
+server_maintenance: 'The server is down for maintenance'
+specified_username_invalid: 'The specified username is invalid.'
+unable_to_connect: 'Unable to connect to the game server.'

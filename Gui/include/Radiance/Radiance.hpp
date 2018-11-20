@@ -69,7 +69,7 @@ namespace Radiance
         public:
             UI* uiPtr = nullptr;
             String name;
-            Reference<WidgetStyle> style;
+            WidgetStyle* style;
 
             bool visible;
             Vector<> pos, size;
@@ -243,6 +243,8 @@ namespace Radiance
 
     RadianceClass UI : public Panel
     {
+        IEngine* engine;
+
         /*int tooltipX, tooltipY;
         li::String tooltip;
 
@@ -251,7 +253,7 @@ namespace Radiance
         li::List<Widget*> focusQueue;
         //, overlays, removalQueue;
 
-        Styler* styler = nullptr;
+        Styler* styler;
         Object<Window> modal;
         //Var<Widget*> topLevelWindow;
 
@@ -261,7 +263,7 @@ namespace Radiance
         void setTop( Widget* widget );
 
         public:
-            UI( Styler* styler, const Vector<float>& pos, const Vector<float>& size );
+            UI( IEngine* engine, Styler* styler, const Vector<float>& pos, const Vector<float>& size );
             virtual ~UI();
 
             void add( Widget* widget );

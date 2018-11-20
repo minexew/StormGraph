@@ -68,7 +68,7 @@ namespace Radiance
             Reference<IRenderBuffer> renderBuffer;
             Reference<IMaterial> material;
             Reference<IModel> model[2];
-            /*Reference<IShader> shader;*/
+            Reference<IShaderProgram> shader;
             Reference<IFont> font;
             Text* windowTitle;
             int blurProgress, blurRadius;
@@ -85,7 +85,7 @@ namespace Radiance
             void animateProperty( unsigned name, float value );
             virtual Vector<float> beginRender( const Vector<float>& pos );
             virtual void endRender();
-            virtual void* getInterface( const char* name );
+            //virtual void* getInterface( const char* name );
             virtual void onUpdate( double delta );
             virtual void setProperty( unsigned name, int value );
             virtual void setProperty( unsigned name, float value );

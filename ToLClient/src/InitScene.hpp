@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <StormGraph/GraphicsDriver.hpp>
@@ -11,12 +12,15 @@ namespace TolClient
     class InitScene : public IScene
     {
         protected:
-            IGraphicsDriver* graphicsDriver;
+            IGraphicsDriver* driver;
+            Vector2<> windowSize;
 
             enum { preloading, fadeout } state;
 
-            Reference<ITexture> texture;
-            float angle, progress;
+            Reference<IMaterial> material;
+            Reference<IModel> model;
+            List<Transform> transforms;
+            double progress;
 
             Object<TitleScenePreloader> preloader;
 
@@ -25,15 +29,13 @@ namespace TolClient
             const InitScene& operator = ( const InitScene& );
 
         public:
-            InitScene();
+            InitScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize );
             virtual ~InitScene();
 
-            virtual void init() override;
-            virtual void uninit() override;
+            void init() override {}
+            void uninit() override {}
 
-            virtual void onRender() override;
-            virtual void onUpdate( double delta ) override;
-
-            void Run();
+            void onRender() override;
+            void onUpdate( double delta ) override;
     };
 }

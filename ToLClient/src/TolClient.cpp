@@ -2,24 +2,17 @@
 #include "InitScene.hpp"
 #include "TolClient.hpp"
 
-#include <StormGraph/Core.hpp>
 #include <StormGraph/Engine.hpp>
 #include <StormGraph/ResourceManager.hpp>
-
-#include <React/React.hpp>
 
 #include <littl/File.hpp>
 
 using namespace StormGraph;
-using namespace StormRender;
 
 namespace TolClient
 {
     IResourceManager* Resources::bootstrapResMgr, * Resources::uiResMgr, * Resources::musicResMgr;
-    IEngine* engine = nullptr;
-
-    IR* r = nullptr;
-    ISys* sys = nullptr;
+    Object<IEngine> sg;
 
     Resources::Resources()
     {
@@ -37,7 +30,7 @@ namespace TolClient
     IResourceManager* Resources::getBootstrapResMgr()
     {
         if ( !bootstrapResMgr )
-            bootstrapResMgr = engine->createResourceManager( "bootstrapResMgr", true );
+            bootstrapResMgr = sg->createResourceManager( "bootstrapResMgr", true );
 
         return bootstrapResMgr;
     }
@@ -45,7 +38,7 @@ namespace TolClient
     IResourceManager* Resources::getUiResMgr( bool create )
     {
         if ( !uiResMgr && create )
-            uiResMgr = engine->createResourceManager( "uiResMgr", true );
+            uiResMgr = sg->createResourceManager( "uiResMgr", true );
 
         return uiResMgr;
     }
@@ -53,7 +46,7 @@ namespace TolClient
     IResourceManager* Resources::getMusicResMgr( bool create )
     {
         if ( !musicResMgr && create )
-            musicResMgr = engine->createResourceManager( "musicResMgr", true );
+            musicResMgr = sg->createResourceManager( "musicResMgr", true);
 
         return musicResMgr;
     }
@@ -64,86 +57,74 @@ namespace TolClient
 
         try
         {
-#ifdef _DEBUG
-            Common::setAbortOnError( true );
-#endif
-
             // Engine
-            engine = Common::getCore( StormGraph_API_Version )->createEngine( "TolClient", argc, argv );
-            sys = Common::getCore( StormGraph_API_Version )->createSys( "TolClient", argc, argv );
-
-            engine->addFileSystem( "native:" );
-
-            engine->addFileSystem( "mox:TolClient/en_GB.mox", false );
-            engine->addFileSystem( "mox:TolClient/Music.0.mox", false );
-            engine->addFileSystem( "mox:TolClient/UI.mox", false );
-            engine->addFileSystem( "mox:System.mox", false );
-
-            engine->executeFile( "TolClient/startup.txt" );
-            engine->executeFile( "TolClient/startup_" StormGraph_BuildTarget ".txt" );
-
-            engine->startup();
-            engine->startupGraphics();
-
-            engine->addStringTable( "TolClient/Localized/Strings.cfx2" );
+            sg = Common::getCore( StormGraph_API_Version )->createEngine( "TolClient", argc, argv );
+            sg->addFileSystem( "native:" );
+            sg->startup();
+            sg->startupGraphics();
 
             // Resource Managers
             Resources resourcesGuard;
 
-            IGraphicsDriver* graphicsDriver = engine->getGraphicsDriver();
-            r = graphicsDriver->getR();
+            IGraphicsDriver* driver = sg->getGraphicsDriver();
+
+            /*
+            sg->addFileSystem( "mox:TolClient/en_GB.mox" );
+            sg->addFileSystem( "mox:TolClient/Music.0.mox" );
+            sg->addFileSystem( "mox:TolClient/UI.mox" );
+            sg->addFileSystem( "mox:System.mox" );
+            */
+
+            sg->addStringTable( "TolClient/Localized/Strings.cfx2" );
 
             // Some settings
-            showConsole = engine->getConfigInt( "Dev/showConsole", false );
+            showConsole = sg->getConfigInt( "Dev/showConsole", false );
 
-            sys->ExecList( "TolClient/config.txt" );
+            // Set-up the Resource Manager
+            //Reference<ResourceManager> resMgr = new ResourceManager( "resMgr" );
+
+            /*resMgr->addPath( "" );
+            resMgr->addPath( "sg_demo/res/" );
+
+            resMgr->addModelPath( "tolcl/model/char0/" );
+
+            resMgr->addTexturePath( "" );
+            resMgr->addTexturePath( "tolcl/tex/char0/" );
+            resMgr->addTexturePath( "sg_demo/res/" );*/
 
             // Set Display Mode
-            r->StartVideo();
-
-            /*DisplayMode displayMode;
-            memset( &displayMode, 0, sizeof( displayMode ) );
+            DisplayMode displayMode;
+            sg->getDefaultDisplayMode( &displayMode );
 
             displayMode.windowTitle = "Tales of Lanthaia";
-            displayMode.resizable = true;
-            engine->getDefaultDisplayMode( &displayMode );
-
-            graphicsDriver->setDisplayMode( &displayMode );*/
+            driver->setDisplayMode( &displayMode );
 
             // Set LOD
-            /*LevelOfDetail lod;
-            engine->getDefaultLodSettings( &lod );
-            graphicsDriver->setLevelOfDetail( &lod );*/
+            LevelOfDetail lod;
+            sg->getDefaultLodSettings( &lod );
+            driver->setLevelOfDetail( &lod );
 
             // Go!
-
-            InitScene* initScene = new InitScene();
-
-            initScene->init();
-            initScene->Run();
-
-            delete initScene;
-
-            //engine->run( new TolClient::InitScene() );
+            sg->run( new TolClient::InitScene( driver, Vector2<unsigned>( displayMode.width, displayMode.height ) ) );
             //resMgr->releaseUnused();
 
             //resMgr.release();
-
-            li::destroy( engine );
         }
         catch ( Exception ex )
         {
-            li::destroy( engine );
-
             Common::logEvent( "ToLClient", "Exception caught.\n\n"
                     "<b>Function</b>: " + ex.functionName + "\n"
                     "<b>Exception</b>: " + ex.getName() + "\n\n"
                     "<b>Description</b>: " + ex.getDesc() + "\n\n" );
 
+            sg.release();
+
             Common::displayException( ex, true );
 
             dumpLog = true;
         }
+
+        sg.release();
 
         if ( showConsole )
         {
@@ -158,7 +139,8 @@ namespace TolClient
             Reference<File> file = File::open( "ToL Client Log.html", "wb" );
 
             if ( !file )
-                MessageBox( 0, "FAILED TO SAVE GAME EVENT LOG!!!!!!11111oneoneone", 0, MB_ICONERROR );
+                //MessageBox( 0, "FAILED TO SAVE GAME EVENT LOG!!!!!!11111oneoneone", 0, MB_ICONERROR );
+                {}
             else
                 Common::printEventLog( file.detach() );
         }

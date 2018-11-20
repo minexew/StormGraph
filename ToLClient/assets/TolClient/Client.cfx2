@@ -1,0 +1,18 @@
+StormGraphApp: 'Tales of Lanthaia Game Client' (executable: 'bin/TolClient.exe', devMode: '1')
+
+StormGraph
+  driver: 'OpenGl' (default: 'OpenGl')
+  width: '1280' (default: '800')
+  height: '800' (default: '600')
+  fullscreen: '0' (default: '0')
+  vsync: '1' (default: '0')
+  multisample: '4' (default: '0')
+  textureLod: '0'
+  driverParams: ''
+
+Dev
+  showConsole: '1' (default: '0')
+
+TolClient
+  realm: '89.176.9.186:24897'
+

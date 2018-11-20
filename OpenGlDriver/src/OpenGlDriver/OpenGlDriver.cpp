@@ -525,21 +525,25 @@ namespace OpenGlDriver
         return createModelFromMemory( name, &meshCreationInfo, 1, IModel::fullStatic );
     }
 
-    /*IMaterial* OpenGlDriver::createCustomMaterial( const char* name, IShader* shader )
+    IMaterial* OpenGlDriver::createCustomMaterial( const char* name, IShaderProgram* shader )
     {
         if ( !driverShared.useShaders )
             return 0;
 
-        return new Material( this, name, ( Program* ) shader );
+        // FIXME
+        //return new Material( this, name, ( ShaderProgram* ) shader );
+        return nullptr;
     }
 
-    IShader* OpenGlDriver::createCustomShader( const char* base, const char* name )
+    IShaderProgram* OpenGlDriver::createCustomShader( const char* base, const char* name )
     {
         if ( !driverShared.useShaders )
             return 0;
 
-        return new Program( this, base, name );
-    }*/
+        // FIXME
+        //return new ShaderProgram( this, base, name );
+        return nullptr;
+    }
 
     ITexture* OpenGlDriver::createDepthTexture( const char* name, const Vector2<unsigned>& resolution )
     {
