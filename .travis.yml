@@ -29,7 +29,7 @@ env:
   - COMPONENT=Launcher TARGET=Launcher
   - COMPONENT=Orion TARGET=Orion
   - COMPONENT=StormCraft TARGET=StormCraft
-  #- COMPONENT=ToLClient TARGET=ToLClient -- pointless to attempt building this in the current state
+  - COMPONENT=ToLClient TARGET=ToLClient
 
 matrix:
   allow_failures:
