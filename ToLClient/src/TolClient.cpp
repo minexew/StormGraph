@@ -61,16 +61,19 @@ namespace TolClient
             sg = Common::getCore( StormGraph_API_Version )->createEngine( "TolClient", argc, argv );
             sg->addFileSystem( "native:" );
             sg->startup();
+            sg->startupGraphics();
 
             // Resource Managers
             Resources resourcesGuard;
 
             IGraphicsDriver* driver = sg->getGraphicsDriver();
 
+            /*
             sg->addFileSystem( "mox:TolClient/en_GB.mox" );
             sg->addFileSystem( "mox:TolClient/Music.0.mox" );
             sg->addFileSystem( "mox:TolClient/UI.mox" );
             sg->addFileSystem( "mox:System.mox" );
+            */
 
             sg->addStringTable( "TolClient/Localized/Strings.cfx2" );
 
@@ -136,7 +139,8 @@ namespace TolClient
             Reference<File> file = File::open( "ToL Client Log.html", "wb" );
 
             if ( !file )
-                MessageBox( 0, "FAILED TO SAVE GAME EVENT LOG!!!!!!11111oneoneone", 0, MB_ICONERROR );
+                //MessageBox( 0, "FAILED TO SAVE GAME EVENT LOG!!!!!!11111oneoneone", 0, MB_ICONERROR );
+                {}
             else
                 Common::printEventLog( file.detach() );
         }

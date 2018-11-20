@@ -244,8 +244,8 @@ namespace TolClient
                         }
                         else if ( messageName == "login.entering_world" )
                         {
-                            MessageBoxA( 0, "Entering world!", "Success", MB_OK );
-                            //sg->changeScene( new WorldScene( 0 ) );
+                            //MessageBoxA( 0, "Entering world!", "Success", MB_OK );
+                            sg->changeScene( new WorldScene( 0 ) );
                             return;
                         }
                         // TODO: [$01] End of Automatic enter-world
@@ -337,7 +337,7 @@ namespace TolClient
         }
     }
 
-    void TitleScene::initialize()
+    void TitleScene::init()
     {
         IResourceManager* uiResMgr = Resources::getUiResMgr();
         IResourceManager* musicResMgr = Resources::getMusicResMgr();
@@ -377,7 +377,7 @@ namespace TolClient
 
         // UI
         ui.styler = new Radiance::EpicStyler( driver, uiResMgr->reference() );
-        ui.ui = new Radiance::UI( ui.styler, Vector<>(), windowSize );
+        ui.ui = new Radiance::UI( sg, ui.styler, Vector<>(), windowSize );
 
         {
             cfx2::Document activityIndicatorDoc = sg->loadCfx2Asset( "TolClient/UI/activityIndicator.cfx2" );
@@ -529,7 +529,7 @@ namespace TolClient
         }
     }
 
-    void TitleScene::render()
+    void TitleScene::onRender()
     {
         background.model->render( background.transforms );
 
@@ -568,7 +568,7 @@ namespace TolClient
         this->state = mainMenu;
     }
 
-    void TitleScene::update( double delta )
+    void TitleScene::onUpdate( double delta )
     {
         if ( state == title )
         {

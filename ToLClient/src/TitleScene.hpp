@@ -160,17 +160,19 @@ namespace TolClient
             TitleScene( IGraphicsDriver* driver, const Vector2<unsigned>& windowSize, TitleScenePreloader* preloader );
             virtual ~TitleScene();
 
-            virtual void initialize();
+            void init() override;
+            void uninit() override {}
 
-            virtual void onKeyState( int16_t key, Key::State state, Unicode::Char character );
+            void onKeyState( int16_t key, Key::State state, Unicode::Char character ) override;
             void onLoginSessionStatus();
-            virtual void onMouseMoveTo( const Vector2<int>& mouse );
-            virtual void onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties );
+            void onMouseMoveTo( const Vector2<int>& mouse ) override;
+            void onRadianceEvent( Radiance::Widget* widget, const String& eventName, void* eventProperties ) override;
 
-            virtual void render();
+            void onRender() override;
+            void onUpdate( double delta ) override;
+
             void sessionError( const String& errorName );
             void showMainMenu();
-            virtual void update( double delta );
     };
 }
 

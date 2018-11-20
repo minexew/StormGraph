@@ -24,6 +24,7 @@
 #include <Radiance/Radiance.hpp>
 #include <Radiance/Styler.hpp>
 
+#ifdef _WIN32
 extern "C" BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 {
     switch ( fdwReason )
@@ -43,6 +44,7 @@ extern "C" BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 
     return TRUE;
 }
+#endif
 
 namespace Radiance
 {

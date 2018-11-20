@@ -221,13 +221,13 @@ namespace StormGraph
             virtual ~IHeightMap();
     };*/
 
-    /*SgCoreClass IShaderProgram : public Resource
+    class IShaderProgram : public IResource
     {
         public:
             li_ReferencedClass_override( IShaderProgram )
 
             IShaderProgram( const char* name );
-            virtual ~IShaderProgram();
+            virtual ~IShaderProgram() {}
 
             virtual int getParamId( const char* name ) = 0;
             virtual void select() = 0;
@@ -235,7 +235,7 @@ namespace StormGraph
             virtual void setTexture( ITexture* texture ) = 0;
             virtual void setFloatParam( int id, float a ) = 0;
             virtual void setVector2Param( int id, float x, float y ) = 0;
-    };*/
+    };
 
     /*struct MaterialProperties
     {
@@ -260,6 +260,8 @@ namespace StormGraph
             li_ReferencedClass_override( IMaterial )
 
             virtual ~IMaterial() {}
+
+            virtual void setColour( const Colour& colour ) = 0;
 
             //virtual void query( MaterialProperties* properties ) = 0;
     };
@@ -525,8 +527,8 @@ namespace StormGraph
             virtual ICubeMap* createDepthCubeMap( const char* name, const Vector2<unsigned>& resolution ) { return nullptr; }
             virtual ITexture* createDepthTexture( const char* name, const Vector2<unsigned>& resolution ) = 0;
             virtual ILight* createDirectionalLight( const Vector<float>& direction, const Colour& ambient, const Colour& diffuse, const Colour& specular ) = 0;
-            //virtual IMaterial* createCustomMaterial( const char* name, IShader* shader ) = 0;
-            //virtual IShader* createCustomShader( const char* base, const char* name ) = 0;
+            virtual IMaterial* createCustomMaterial( const char* name, IShaderProgram* shader ) = 0;
+            virtual IShaderProgram* createCustomShader( const char* base, const char* name ) = 0;
             virtual IFont* createFontFromStream( const char* name, SeekableInputStream* input, unsigned size, unsigned style ) = 0;
             //virtual IHeightMap* createHeightMapFromStream( SeekableInputStream* input, const char* name ) = 0;
             virtual IMaterial* createMaterial( const char* name, const MaterialProperties2* material, bool finalized ) = 0;

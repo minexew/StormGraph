@@ -392,7 +392,7 @@ namespace OpenGlDriver
             virtual const char* getClassName() const { return "OpenGlDriver.Material"; }
             virtual const char* getName() const { return name; }
             virtual void query( unsigned flags, MaterialProperties2* properties );
-            void setColour( const Colour& colour );
+            void setColour( const Colour& colour ) override;
     };
 
     struct MeshPreload
@@ -964,8 +964,8 @@ namespace OpenGlDriver
             virtual void clearLights(); // TODO replace
             virtual IModel* createCuboid( const char* name, CuboidCreationInfo* cuboid ) override;
             virtual IModel* createCuboid( const char* name, const CuboidCreationInfo2& creationInfo, IMaterial* material, unsigned flags = IModel::fullStatic ) override;
-            //virtual IMaterial* createCustomMaterial( const char* name, IShader* shader );
-            //virtual IShader* createCustomShader( const char* base, const char* name );
+            virtual IMaterial* createCustomMaterial( const char* name, IShaderProgram* shader );
+            virtual IShaderProgram* createCustomShader( const char* base, const char* name );
             virtual ITexture* createDepthTexture( const char* name, const Vector2<unsigned>& resolution ) override;
             virtual ILight* createDirectionalLight( const Vector<float>& direction, const Colour& ambient, const Colour& diffuse, const Colour& specular ) override;
             virtual IFont* createFontFromStream( const char* name, SeekableInputStream* input, unsigned size, unsigned style ) override;

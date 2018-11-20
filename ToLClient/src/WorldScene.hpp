@@ -22,6 +22,9 @@ namespace TolClient
             WorldScene( TcpSocket* socket );
             virtual ~WorldScene();
 
-            virtual void render();
+            void init() override {}
+            void uninit() override {}
+
+            void onRender() override;
     };
 }

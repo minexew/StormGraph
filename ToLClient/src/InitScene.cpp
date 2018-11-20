@@ -43,12 +43,12 @@ namespace TolClient
             preloader->waitFor();
     }
 
-    void InitScene::render()
+    void InitScene::onRender()
     {
         model->render( transforms );
     }
 
-    void InitScene::update( double delta )
+    void InitScene::onUpdate( double delta )
     {
         if ( state == preloading )
         {
@@ -89,17 +89,11 @@ namespace TolClient
             if ( progress > 0.98f )
             {
                 Reference<TitleScene> title = new TitleScene( driver, windowSize, preloader.detach() );
-                title->initialize();
                 sg->changeScene( title.detach() );
                 return;
             }
 
-            /*MaterialProperties query;
-
-            query.query = MaterialProperties::setColour;
-            query.colour = Colour( 0.0f, 0.0f, 0.0f, progress );
-
-            material->query( &query );*/
+            material->setColour( Colour( 0.0f, 0.0f, 0.0f, progress ) );
         }
     }
 }

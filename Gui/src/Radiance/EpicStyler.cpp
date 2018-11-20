@@ -172,7 +172,7 @@ namespace Radiance
 
     Vector<float> EpicWindowStyle::beginRender( const Vector<float>& pos )
     {
-        driver->disableDepthTesting();
+        driver->setRenderFlag( RenderFlag::depthTest, false );
 
         if ( windowTitle )
             font->renderText( pos.x, pos.y - 12.0f, windowTitle );
@@ -215,13 +215,13 @@ namespace Radiance
         }
     }
 
-    void* EpicWindowStyle::getInterface( const char* name )
+    /*void* EpicWindowStyle::getInterface( const char* name )
     {
         if ( strcmp( name, "Radiance.EpicWindowStyle" ) == 0 )
             return this;
         else
             return Resource::getInterface( name );
-    }
+    }*/
 
     void EpicWindowStyle::onUpdate( double delta )
     {
@@ -336,24 +336,18 @@ namespace Radiance
 
     Vector<float> EpicWidgetStyle::beginRender( const Vector<float>& pos )
     {
-        MaterialProperties query;
-
         switch ( type )
         {
             case WidgetStyle::button:
                 modelTransforms[0].vector = pos;
 
                 // base model
-                query.query = MaterialProperties::setColour;
-                query.colour = Colour::white();
-                material->query( &query );
+                material->setColour( Colour::white() );
 
                 model->render( modelTransforms );
 
                 // highlight
-                query.query = MaterialProperties::setColour;
-                query.colour = Colour( 0.0f, 0.0f, 0.0f, highlightAlpha );
-                material->query( &query );
+                material->setColour( Colour( 0.0f, 0.0f, 0.0f, highlightAlpha ) );
 
                 highlight->render( modelTransforms );
 
@@ -371,23 +365,17 @@ namespace Radiance
                 modelTransforms[0].vector = pos;
 
                 // base model
-                query.query = MaterialProperties::setColour;
-                query.colour = Colour::white();
-                material->query( &query );
+                material->setColour( Colour::white() );
 
                 model->render( modelTransforms );
 
                 // highlight
-                query.query = MaterialProperties::setColour;
-                query.colour = Colour( 0.0f, 0.0f, 0.0f, highlightAlpha );
-                material->query( &query );
+                material->setColour( Colour( 0.0f, 0.0f, 0.0f, highlightAlpha ) );
 
                 highlight->render( modelTransforms );
 
                 // saturate
-                query.query = MaterialProperties::setColour;
-                query.colour = Colour( 1.0f, 1.0f, 1.0f, satAlpha );
-                material->query( &query );
+                material->setColour( Colour( 1.0f, 1.0f, 1.0f, satAlpha ) );
 
                 saturate->render( modelTransforms );
 
@@ -414,11 +402,7 @@ namespace Radiance
     {
         if ( stage == beforeModal && modalShadowAlpha > 0.0f )
         {
-            MaterialProperties query;
-
-            query.query = MaterialProperties::setColour;
-            query.colour = Colour( 0.0f, 0.0f, 0.0f, modalShadowAlpha );
-            material->query( &query );
+            material->setColour( Colour( 0.0f, 0.0f, 0.0f, modalShadowAlpha ) );
 
             modalShadow->render( modelTransforms );
         }

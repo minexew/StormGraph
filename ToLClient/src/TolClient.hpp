@@ -18,7 +18,9 @@ namespace TolClient
 
     const static uint32_t clientVersion = 3;
 
+#ifndef M_PI
     constexpr double M_PI = 3.1415;
+#endif
 
     class Resources
     {

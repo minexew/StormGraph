@@ -545,8 +545,8 @@ namespace Radiance
         onClose = listener;
     }
 
-    UI::UI( Styler* styler, const Vector<float>& pos, const Vector<float>& size )
-            : Panel( styler->createWidgetStyle( WidgetStyle::ui, size ), pos, size ), styler( styler )
+    UI::UI( IEngine* engine, Styler* styler, const Vector<float>& pos, const Vector<float>& size )
+            : Panel( styler->createWidgetStyle( WidgetStyle::ui, size ), pos, size ), engine( engine ), styler( styler )
     {
     }
 
@@ -596,7 +596,7 @@ namespace Radiance
         }
         else if ( type == "Image" )
         {
-            cfx2::Document description = Engine::getInstance()->loadCfx2Asset( node.getAttrib( "description" ) );
+            cfx2::Document description = engine->loadCfx2Asset( node.getAttrib( "description" ) );
 
             widget = new Image( styler, Vector<>( node.getAttrib( "pos" ) ), description );
         }
@@ -610,7 +610,10 @@ namespace Radiance
             widget = new Input( styler, Vector<>( node.getAttrib( "pos" ) ), Vector<>( node.getAttrib( "size" ) ), inputType );
         }
         else if ( type == "Label" )
-            widget = new Label( styler, Vector<>( node.getAttrib( "pos" ) ), node.getAttrib( "text" ), strtoul( node.getAttrib( "align" ), 0, 0 ) );
+        {
+            const char* alignAttrib = node.getAttrib( "align" );
+            widget = new Label( styler, Vector<>( node.getAttrib( "pos" ) ), node.getAttrib( "text" ), alignAttrib ? strtoul( alignAttrib, 0, 0 ) : ( IFont::left | IFont::top ) );
+        }
         else if ( type == "Panel" )
         {
             panel = new Panel( styler, Vector<>( node.getAttrib( "pos" ) ), Vector<>( node.getAttrib( "size" ) ) );
@@ -650,7 +653,7 @@ namespace Radiance
 
     void UI::load( const char* fileName, EventListener* listener )
     {
-        cfx2::Document doc = Engine::getInstance()->loadCfx2Asset( fileName );
+        cfx2::Document doc = engine->loadCfx2Asset( fileName );
 
         iterate ( doc )
             add( load( fileName, listener, doc.current() ) );

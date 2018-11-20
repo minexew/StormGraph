@@ -12,7 +12,7 @@ endif()
 set(sources
     ${PROJECT_SOURCE_DIR}/src/Radiance/EpicStyler.cpp
     ${PROJECT_SOURCE_DIR}/src/Radiance/Models.hpp
-    ${PROJECT_SOURCE_DIR}/src/Radiance/OnyxStyler.cpp
+    #${PROJECT_SOURCE_DIR}/src/Radiance/OnyxStyler.cpp
     ${PROJECT_SOURCE_DIR}/src/Radiance/Radiance.cpp
     ${PROJECT_SOURCE_DIR}/src/Radiance/Styler.cpp
     ${PROJECT_SOURCE_DIR}/src/Radiance/Widget.cpp

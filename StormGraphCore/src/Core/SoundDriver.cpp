@@ -97,6 +97,11 @@ namespace StormGraph
             virtual size_t read( void* output, size_t numSamples );
     };
 
+    ISoundStream* SoundDriver_newVorbisSoundStream( InputStream* input, const char* name )
+    {
+        return new VorbisSoundStream( input, name );
+    }
+
     SoundDriver::SoundDriver() : device( nullptr ), context( nullptr )
     {
         device = alcOpenDevice( 0 );
