@@ -35,6 +35,7 @@ TmeFrame::TmeFrame( World* world, Resources* res, wxGLContext* ctx, WorldNode* e
 	SetClientSize(wxSize(886,509));
 	Move(wxDefaultPosition);
 	auiManager = new wxAuiManager(this, wxAUI_MGR_DEFAULT);
+        this->Show();
 	int GLCanvasAttributes_1[] = {
 		WX_GL_RGBA,
 		WX_GL_DOUBLEBUFFER,
