@@ -1,0 +1,13 @@
+Package: 'sg_demo' (output: 'version')
+
+{ Update Mirrors }
+Mirror: 'rejpakisland.ic.cz/sg_demo'
+Mirror: 'update.lanthaia.net/sg_demo'
+
+{ Base Files }
+Md5: 'bin'
+Md5: 'sg_demo.mox'
+Md5: 'SgConfig.exe'
+
+{ Editable Files }
+Exist: 'sg_demo.cfx2'
