@@ -245,7 +245,7 @@ namespace TolClient
                         else if ( messageName == "login.entering_world" )
                         {
                             //MessageBoxA( 0, "Entering world!", "Success", MB_OK );
-                            sg->changeScene( new WorldScene( 0 ) );
+                            sg->changeScene( new WorldScene( socket.detach() ) );
                             return;
                         }
                         // TODO: [$01] End of Automatic enter-world

@@ -26,12 +26,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set(sources
         ${PROJECT_SOURCE_DIR}/src/InitScene.cpp
         ${PROJECT_SOURCE_DIR}/src/InitScene.hpp
+        ${PROJECT_SOURCE_DIR}/src/Map.cpp
+        ${PROJECT_SOURCE_DIR}/src/Map.hpp
+        ${PROJECT_SOURCE_DIR}/src/Messages.hpp
         ${PROJECT_SOURCE_DIR}/src/TitleScene.cpp
         ${PROJECT_SOURCE_DIR}/src/TitleScene.hpp
         ${PROJECT_SOURCE_DIR}/src/TolClient.cpp
         ${PROJECT_SOURCE_DIR}/src/TolClient.hpp
         ${PROJECT_SOURCE_DIR}/src/WorldScene.cpp
         ${PROJECT_SOURCE_DIR}/src/WorldScene.hpp
+        ${PROJECT_SOURCE_DIR}/src/WorldSession.cpp
+        ${PROJECT_SOURCE_DIR}/src/WorldSession.hpp
 )
 
 if (BUILD_SHARED_LIBS)

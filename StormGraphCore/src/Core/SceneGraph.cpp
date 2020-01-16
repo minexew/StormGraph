@@ -329,14 +329,14 @@ namespace StormGraph
             i->render();
 
         //glm::mat4 biasMatrix = glm::translate( glm::scale( glm::mat4(), glm::vec3( 0.5f, 0.5f, 0.5f ) ), glm::vec3( 1.0f, 1.0f, 1.0f ) );
-        const glm::mat4 biasMatrix( 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.5f, 0.5f, 0.5f, 1.0f );
-        const glm::mat4 textureMatrix = biasMatrix * pointLights[0]->lightProjection * pointLights[0]->lightView;
-
-        graphicsDriver->beginShadowMapping( pointLights[0]->depthTexture, textureMatrix );
+//        const glm::mat4 biasMatrix( 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.5f, 0.5f, 0.5f, 1.0f );
+//        const glm::mat4 textureMatrix = biasMatrix * pointLights[0]->lightProjection * pointLights[0]->lightView;
+//
+//        graphicsDriver->beginShadowMapping( pointLights[0]->depthTexture, textureMatrix );
 
         renderScene();
 
-        graphicsDriver->endShadowMapping();
+//        graphicsDriver->endShadowMapping();
     }
 
     /*void SceneGraph::render( IRenderQueue* renderQueue )

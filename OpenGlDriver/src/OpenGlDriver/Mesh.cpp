@@ -873,8 +873,12 @@ namespace OpenGlDriver
             if ( indexPointer == nullptr && indices != nullptr )
             {
                 void* indexBuffer = glApi.functions.glMapBuffer( GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY );
+                void* alloc = nullptr;
 
-                SG_assert( indexBuffer != nullptr )
+                if (indexBuffer == nullptr) {
+                    alloc = malloc(remoteData->iboCapacity);
+                    indexBuffer = alloc;
+                }
 
                 if ( remoteData->indexFormat == GL_UNSIGNED_BYTE )
                 {
@@ -891,7 +895,13 @@ namespace OpenGlDriver
                         indexBuffer2[i] = ( GLushort ) indices[i];
                 }
 
-                glApi.functions.glUnmapBuffer( GL_ELEMENT_ARRAY_BUFFER );
+                if (alloc == nullptr) {
+                    glApi.functions.glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+                }
+                else {
+                    glApi.functions.glBufferData( GL_ELEMENT_ARRAY_BUFFER, remoteData->iboCapacity, alloc, getIboUsageByFlags( flags ) );
+                    free(alloc);
+                }
             }
 
             glApi.functions.glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
@@ -955,6 +965,13 @@ namespace OpenGlDriver
             driver->gpuStats.bytesInMeshes += remoteData->vboCapacity;
 
             float* vertexBuffer = ( float* ) glApi.functions.glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+            void* alloc = nullptr;
+
+            if (vertexBuffer == nullptr) {
+                alloc = malloc(remoteData->vboCapacity);
+                vertexBuffer = (float*)alloc;
+            }
+
             SG_assert( vertexBuffer != nullptr )
 
             for ( size_t i = 0; i < vertices->count; i++ )
@@ -994,7 +1011,16 @@ namespace OpenGlDriver
                 }
             }
 
-            glApi.functions.glUnmapBuffer( GL_ARRAY_BUFFER );
+            if (alloc == nullptr)
+            {
+                glApi.functions.glUnmapBuffer( GL_ARRAY_BUFFER );
+            }
+            else
+            {
+                glApi.functions.glBufferData( GL_ARRAY_BUFFER, remoteData->vboCapacity, alloc, usage );
+                free(alloc);
+            }
+
             glApi.functions.glBindBuffer( GL_ARRAY_BUFFER, 0 );
         }
         else

@@ -26,6 +26,8 @@
 #include <StormGraph/Core.hpp>
 #include <StormGraph/GeometryFactory.hpp>
 
+#include <gsl/span>
+
 // TODO: remove IRenderable
 
 namespace StormRender
@@ -44,6 +46,8 @@ namespace StormGraph
     class IResourceManager;
     class ITexture;
     class ITexturePreload;
+
+    using gsl::span;
 
     typedef IGraphicsDriver* ( *GraphicsDriverProvider )( const char* driverName, IEngine* engine );
 
@@ -292,6 +296,7 @@ namespace StormGraph
 
             virtual unsigned pick( const List<Transform>& transforms ) = 0;
 
+            void render( span<const Transform> transforms ) { this->render(transforms.data(), transforms.size()); }
             virtual void render( const List<Transform>& transforms ) = 0;
             virtual void render( const List<Transform>** transforms, size_t count ) = 0;
 

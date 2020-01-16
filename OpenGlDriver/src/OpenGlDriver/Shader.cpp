@@ -325,11 +325,11 @@ namespace OpenGlDriver
         if ( numTextures > 0 )
             pixelShaderSource += " * texture2D( textures[0], uv[0] )";
 
-        if ( properties->common.dynamicLighting )
-            pixelShaderSource += " * vec4( lightSum, 1.0 )";
-
-        if ( properties->common.lightMapping )
-            pixelShaderSource += " * texture2D( lightMap, lightUv )";
+//        if ( properties->common.dynamicLighting )
+//            pixelShaderSource += " * vec4( lightSum, 1.0 )";
+//
+//        if ( properties->common.lightMapping )
+//            pixelShaderSource += " * texture2D( lightMap, lightUv )";
 
         //if ( toon )
         //    pixelShaderSource += ") * vec4( 5.0, 5.0, 5.0, 1.0 ) ) / vec4( 5.0, 5.0, 5.0, 1.0 )";

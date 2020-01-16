@@ -14,6 +14,8 @@ namespace TolClient
     IResourceManager* Resources::bootstrapResMgr, * Resources::uiResMgr, * Resources::musicResMgr;
     Object<IEngine> sg;
 
+    IResourceManager* globalResMgr;
+
     Resources::Resources()
     {
         bootstrapResMgr = 0;
@@ -81,16 +83,16 @@ namespace TolClient
             showConsole = sg->getConfigInt( "Dev/showConsole", false );
 
             // Set-up the Resource Manager
-            //Reference<ResourceManager> resMgr = new ResourceManager( "resMgr" );
+            globalResMgr = sg->createResourceManager("globalResMgr", true); // hack
 
             /*resMgr->addPath( "" );
             resMgr->addPath( "sg_demo/res/" );
 
             resMgr->addModelPath( "tolcl/model/char0/" );
 
-            resMgr->addTexturePath( "" );
-            resMgr->addTexturePath( "tolcl/tex/char0/" );
-            resMgr->addTexturePath( "sg_demo/res/" );*/
+            resMgr->addTexturePath( "" );*/
+            globalResMgr->addPath( "tolcl/tex/" );
+            /*resMgr->addTexturePath( "sg_demo/res/" );*/
 
             // Set Display Mode
             DisplayMode displayMode;
@@ -148,7 +150,7 @@ namespace TolClient
         if ( showConsole )
         {
             printf( "\n--- DONE ---\n" );
-            getchar();
+//            getchar();
         }
     }
 }

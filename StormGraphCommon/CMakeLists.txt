@@ -13,6 +13,10 @@ add_subdirectory(dependencies/littl)
 file(GLOB sources
     ${PROJECT_SOURCE_DIR}/src/Common/*.cpp
 
+    ${PROJECT_SOURCE_DIR}/include/gsl/gsl_assert
+    ${PROJECT_SOURCE_DIR}/include/gsl/gsl_byte
+    ${PROJECT_SOURCE_DIR}/include/gsl/gsl_util
+    ${PROJECT_SOURCE_DIR}/include/gsl/span
     ${PROJECT_SOURCE_DIR}/include/StormGraph/*.hpp
 )
 
