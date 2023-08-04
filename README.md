@@ -4,16 +4,16 @@ StormGraph Engine &amp; games ca. 2011
 Content is mostly authentic aside from fixes to make compilation possible on modern systems.
 
 ## Storm
-![Game Screenshot](http://i.imgur.com/QIQKo12.png)
+![Game Screenshot](QIQKo12.png)
 
 ## BspView
-![Map Viewer Screenshot](http://i.imgur.com/NghlBqz.jpg)
+![Map Viewer Screenshot](NghlBqz.jpg)
 
 ## SgDemo
-![Demo Screenshot](http://i.imgur.com/aF1HlD7.png)
+![Demo Screenshot](aF1HlD7.png)
 
 ## StormCraft
-![Editor Screenshot](http://i.imgur.com/6Qxt8Yo.png)
+![Editor Screenshot](6Qxt8Yo.png)
 
 ## TolClient
-![Login Screenshot](http://i.imgur.com/ItHvvee.png)
+![Login Screenshot](ItHvvee.png)
